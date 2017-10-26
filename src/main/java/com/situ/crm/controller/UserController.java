@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
+import com.situ.crm.pojo.User;
 import com.situ.crm.service.IUserService;
 
 @Controller
@@ -22,7 +23,7 @@ public class UserController {
 	
 	@RequestMapping(value="pageList")
 	@ResponseBody
-	public EasyUIDataGrid pageList(Integer page, Integer rows) {
-		return userService.pageList(page, rows);
+	public EasyUIDataGrid pageList(Integer page, Integer rows, User user) {
+		return userService.pageList(page, rows,user);
 	}
 }

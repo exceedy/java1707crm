@@ -8,7 +8,7 @@
 </head>
 <%@include file="../common/head.jsp" %>
 <body>
-	<table class="easyui-datagrid" rownumbers="true" fitColumns="true"
+	<table id="datagrid" class="easyui-datagrid" rownumbers="true" fitColumns="true"
 		pagination="true"
 		data-options="fit:true,singleSelect:true,url:'${ctx}/user/pageList.action',method:'get',toolbar:'#toolbar'">
 		<thead>
@@ -27,6 +27,14 @@
 		<a href="#" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
 	</div>
+	<script type="text/javascript">
+		function doSearch (value) {
+			$("#datagrid").datagrid("load",{
+				"userName":value
+			})
+		}
+	</script>
 </body>
 </html>
