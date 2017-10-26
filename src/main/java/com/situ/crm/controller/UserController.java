@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
+import com.situ.crm.common.ServletResponse;
 import com.situ.crm.pojo.User;
 import com.situ.crm.service.IUserService;
 
@@ -25,5 +26,11 @@ public class UserController {
 	@ResponseBody
 	public EasyUIDataGrid pageList(Integer page, Integer rows, User user) {
 		return userService.pageList(page, rows,user);
+	}
+	
+	@RequestMapping(value="delete")
+	@ResponseBody
+	public ServletResponse deleteUser(String ids) {
+		return userService.deleteUser(ids);
 	}
 }

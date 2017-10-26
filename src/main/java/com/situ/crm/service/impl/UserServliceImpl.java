@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrid;
+import com.situ.crm.common.ServletResponse;
 import com.situ.crm.dao.UserMapper;
 import com.situ.crm.pojo.User;
 import com.situ.crm.pojo.UserExample;
@@ -37,6 +38,18 @@ public class UserServliceImpl implements IUserService {
 		dataGrid.setTotal(total);
 		dataGrid.setRows(userList);
 		return dataGrid;
+	}
+
+	public ServletResponse deleteUser(String ids) {
+		String[] idStr = ids.split(",");
+		try {
+			for (String id : idStr) {
+				userDao.deleteByPrimaryKey(Integer.parseInt(id));
+			}
+			return ServletResponse.creatSuccess("删除成功");
+		} catch (Exception e) {
+			return ServletResponse.creatError("删除失败");
+		}
 	}
 
 }
