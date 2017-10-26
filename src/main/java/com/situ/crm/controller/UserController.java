@@ -1,9 +1,28 @@
 package com.situ.crm.controller;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-@Service
+import com.situ.crm.common.EasyUIDataGrid;
+import com.situ.crm.service.IUserService;
+
+@Controller
+@RequestMapping(value="user")
 public class UserController {
 	
+	@Autowired
+	private IUserService userService;
 	
+	@RequestMapping(value="index")
+	public String index () {
+		return "user_manager";
+	}
+	
+	@RequestMapping(value="pageList")
+	@ResponseBody
+	public EasyUIDataGrid pageList(Integer page, Integer rows) {
+		return userService.pageList(page, rows);
+	}
 }
