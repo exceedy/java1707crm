@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>IDontKnow</display-name>
+  <display-name>Java1707Crm</display-name>
   <welcome-file-list>
     <welcome-file>index.shtml</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -27,14 +27,6 @@
        <filter-name>encoding</filter-name>
        <url-pattern>/*</url-pattern>
     </filter-mapping>
-  <filter>
-       <filter-name>Order</filter-name>
-        <filter-class>com.situ.mall.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-       <filter-name>Order</filter-name>
-       <url-pattern>/*</url-pattern>
-    </filter-mapping>
     
     <!-- 配置spring -->
     <context-param>
@@ -43,44 +35,21 @@
     </context-param>
   
   
-    <!-- 配置SpringMVC 后台 -->
+    <!-- 配置SpringMVC -->
     <servlet>
-        <servlet-name>springmvc-back</servlet-name>
+        <servlet-name>springmvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
        <init-param>
            <param-name>contextConfigLocation</param-name>
-           <param-value>classpath:springmvc-back.xml</param-value>
+           <param-value>classpath:springmvc.xml</param-value>
        </init-param>
        <!-- 启动tomcat时候启动 -->
        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>springmvc-back</servlet-name>
+        <servlet-name>springmvc</servlet-name>
        <url-pattern>*.action</url-pattern>
     </servlet-mapping>
  
-  	<!-- 配置SpringMVC 前台 -->
-    <servlet>
-        <servlet-name>springmvc-front</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-       <init-param>
-           <param-name>contextConfigLocation</param-name>
-           <param-value>classpath:springmvc-front.xml</param-value>
-       </init-param>
-       <!-- 启动tomcat时候启动 -->
-       <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>springmvc-front</servlet-name>
-       <url-pattern>*.shtml</url-pattern>
-    </servlet-mapping>
     
-    <servlet>
-    	<servlet-name>CheckImg</servlet-name>
-    	<servlet-class>com.situ.mall.controller.back.CheckImgServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-    	<servlet-name>CheckImg</servlet-name>
-    	<url-pattern>/checkImg</url-pattern>
-    </servlet-mapping>
 </web-app>
