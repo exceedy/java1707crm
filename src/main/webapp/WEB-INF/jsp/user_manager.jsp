@@ -7,77 +7,14 @@
 <title></title>
 </head>
 <%@include file="../common/head.jsp" %>
-<body>
-	<table id="datagrid" class="easyui-datagrid" rownumbers="true" fitColumns="true"
-		pagination="true"
-		checkOnSelect="true"
-		data-options="fit:true,singleSelect:false,url:'${ctx}/user/pageList.action',method:'get',toolbar:'#toolbar'">
-		<thead>
-			<tr>
-				<th data-options="field:'cb',align:'center',checkbox:true" ></th>
-				<th data-options="field:'id',align:'center',width:80" >编号</th>
-				<th data-options="field:'userName',align:'center',width:80">用户名</th>
-				<th data-options="field:'password',align:'center',width:80">密码</th>
-				<th data-options="field:'trueName',align:'center',width:80">真实姓名</th>
-				<th data-options="field:'email',align:'center',width:80">邮箱</th>
-				<th data-options="field:'phone',align:'center',width:80">手机号</th>
-				<th data-options="field:'roleName',align:'center',width:80">角色</th>
-			</tr>
-		</thead>
-	</table>
-	<div id="toolbar">
-		<a href="javascript:addUser()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
-		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
-		<a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
-		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
-	</div>
-	<div class="easyui-dialog" id="dlg" data-options="closable:true,closed:true,buttons:'#dlg-button'" style="whidth:400px">
-		<form id="fm" method="post">
-			<div class="">   
-		        <label for="userName">用户名:</label>   
-		        <input class="easyui-validatebox" type="text" name="userName" data-options="required:true" />   
-		    </div>  
-			<div>   
-		        <label for="password">密码:</label>   
-		        <input class="easyui-validatebox" type="text" name="password" data-options="required:true" />   
-		    </div>  
-			<div>   
-		        <label for="trueName">真实姓名:</label>   
-		        <input class="easyui-validatebox" type="text" name="trueName" data-options="required:true" />   
-		    </div>  
-			<div>   
-		        <label for="email">邮箱:</label>   
-		        <input class="easyui-validatebox" type="text" name="email" data-options="required:true" />   
-		    </div>  
-			<div>   
-		        <label for="phone">手机号:</label>   
-		        <input class="easyui-validatebox" type="text" name="phone" data-options="required:true" />   
-		    </div>  
-			<div class="fitem">   
-		        <label for="roleName">角色:</label>   
-		        <input class="easyui-validatebox" type="text" name="roleName" data-options="required:true" />   
-		    </div>  
-		</form>
-	</div>
-	<div id = "dlg-button">
-		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok',text:'提交'" href="javascript:submit()"></a>
-		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel',text:'取消'" href="javascript:clear()"></a>
-		<a></a>
-	</div>
-	<script type="text/javascript">
+<script type="text/javascript">
 		function doSearch (value) {
 			$("#datagrid").datagrid("load",{
 				"userName":value
 			})
 		}
 		function deleteUser() {
-			var selectIds = $("#datagrid").datagrid('getSelections');
-			var ids = [];
-			
-			for (var i in selectIds) {
-				ids.push(selectIds[i].id);
-			}
-			ids = ids.join(",");
+			var ids = Util.getSelectionsIds("#datagrid");
 			if (ids.length == 0) {
 				$.messager.alert("系统提示","请选择要删除的信息");
 				return;
@@ -89,8 +26,9 @@
 						"${ctx}/user/delete.action",
 						{ids:ids},
 						function (result) {
-							if (result.status == 0) {
+							if (result.status == Util.SUCCESS) {
 								$.messager.alert("系统提示",result.msg);
+								$("#dialog").datagrid("")
 								$("#datagrid").datagrid("reload")
 							} else {
 								$.messager.alert("系统提示",result.msg);
@@ -101,16 +39,35 @@
 				}
 			})
 		}
-		function addUser() {
+		var url;
+		function openAddDialog() {
 			$("#dlg").dialog("open").dialog("setTitle",'添加');
 			$("#fm").form('clear');
-			url="${ctx}/user/addUser.action"
+			url="${ctx}/user/add.action"
 		}
-		function submit() {
+		
+		function openUpdateDialog () {
+			var selected = $("#datagrid").datagrid("getSelections");
+			if (selected.length == 0) {
+				$.messager.alert("系统提示","请选择要修改的信息");
+				return;
+			}
+			$("#dlg").dialog("open").dialog("setTitle","修改");
+			var row = selected[0];
+			$("#fm").form("load",row);
+			url="${ctx}/user/update.action";
+		}
+		
+		function doSave() {
 			$('#fm').form("submit",{
 				url:url,
 				 onSubmit: function(){    
 				        // do some check    
+				        if ($("#roleName").combobox("getValue") == "") {
+				        	$.messager.alert("系统提示","请选择角色名")
+				        	return false;
+				        }
+				        return $(this).form("validate");
 				        // return false to prevent submit;    
 				    },
 				success:function (data) {
@@ -128,5 +85,86 @@
 			$('#fm').form('clear');
 		}
 	</script>
+<body>
+	<!-- datagrid开始-->
+	<table id="datagrid" class="easyui-datagrid" rownumbers="true" fitColumns="true"
+		pagination="true"
+		checkOnSelect="true"
+		data-options="fit:true,singleSelect:false,url:'${ctx}/user/pageList.action',method:'get',toolbar:'#toolbar'">
+		<thead>
+			<tr>
+				<th data-options="field:'cb',align:'center',checkbox:true" ></th>
+				<th data-options="field:'id',align:'center',width:80" >编号</th>
+				<th data-options="field:'userName',align:'center',width:80">用户名</th>
+				<th data-options="field:'password',align:'center',width:80">密码</th>
+				<th data-options="field:'trueName',align:'center',width:80">真实姓名</th>
+				<th data-options="field:'email',align:'center',width:80">邮箱</th>
+				<th data-options="field:'phone',align:'center',width:80">手机号</th>
+				<th data-options="field:'roleName',align:'center',width:80">角色</th>
+			</tr>
+		</thead>
+	</table>
+	<!-- datagrid结束-->
+	<!-- toolbar开始-->
+	<div id="toolbar">
+		<a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
+		<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
+		<a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
+	</div>
+	<!-- toolbar结束-->
+	<!-- dialog开始-->
+	<div class="easyui-dialog" id="dlg" data-options="closable:true,closed:true,buttons:'#dlg-button'" style="whidth:400px">
+		<form id="fm" method="post">
+			<input type="hidden" id="id" name="id"/>
+			<table> 
+				<tr>
+					<td>
+		      			  用户名: 
+					</td>
+					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+					<td>
+					        <input class="easyui-validatebox" type="text" name="userName" data-options="required:true" /><font color="red">*</font>   
+					</td>
+					 <td>密码:</td> 
+					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+		        	<td><input class="easyui-validatebox" type="text" name="password" data-options="required:true" /><font color="red">*</font></td>   
+				</tr>
+			<tr>   
+		        <td >真实姓名:</td>   
+		        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		        <td><input class="easyui-validatebox" type="text" name="trueName" data-options="required:true" />  <font color="red">*</font></td> 
+		        <td >邮箱:</td>  
+		        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+		        <td><input class="easyui-validatebox" type="text" name="email" data-options="required:true,validType:'email'" /><font color="red">*</font></td>   
+		    </tr>  
+			<tr>   
+		        <td >手机号:</td>  
+		        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td> 
+		       <td> <input class="easyui-validatebox" type="text" name="phone" data-options="required:true" />  <font color="red">*</font></td> 
+		        <td for="roleName">角色:</td>   
+		        <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		        <td>
+		        	<select id="roleName" name="roleName" class="easyui-combobox">
+		        		<option value=""></option>   
+					    <option value="高管">高管</option>   
+					    <option value="销售主管">销售主管</option>   
+					    <option value="客户经理" >客户经理</option>   
+		       		</select>
+		        	<font color="red">*</font>
+		        </td>  
+		    </tr> 
+		    </table> 
+		</form>
+	</div>
+	<!-- dialog结束-->
+	<!-- dlg-button开始-->
+	<div id = "dlg-button">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok',text:'提交'" href="javascript:doSave()"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel',text:'清空'" href="javascript:clear()"></a>
+		<a></a>
+	</div>
+	<!-- dlg-button结束-->
+	
 </body>
 </html>

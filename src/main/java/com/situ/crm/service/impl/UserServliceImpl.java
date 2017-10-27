@@ -66,4 +66,11 @@ public class UserServliceImpl implements IUserService {
 		} 
 	}
 
+	public ServletResponse updateUser(User user) {
+		if(userDao.updateByPrimaryKey(user) > 0) {
+			return  ServletResponse.creatSuccess("修改成功");
+		} 
+		return ServletResponse.creatError("修改失败");
+	}
+
 }

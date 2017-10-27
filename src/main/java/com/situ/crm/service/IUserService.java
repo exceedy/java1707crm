@@ -12,4 +12,6 @@ public interface IUserService {
 
 	ServletResponse addUser(User user);
 
+	ServletResponse updateUser(User user);
+
 }
