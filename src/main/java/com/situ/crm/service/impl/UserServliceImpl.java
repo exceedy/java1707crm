@@ -52,4 +52,18 @@ public class UserServliceImpl implements IUserService {
 		}
 	}
 
+	public ServletResponse addUser(User user) {
+		try {
+			int result = userDao.insert(user);
+			if (result > 0) {
+				return ServletResponse.creatSuccess("添加成功");
+			} else {
+				return ServletResponse.creatError("添加失败");
+			}
+			
+		} catch (Exception e) {
+			return ServletResponse.creatError("程序猿正在抢修");
+		} 
+	}
+
 }

@@ -10,4 +10,6 @@ public interface IUserService {
 
 	ServletResponse deleteUser(String ids);
 
+	ServletResponse addUser(User user);
+
 }

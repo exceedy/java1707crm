@@ -26,10 +26,43 @@
 		</thead>
 	</table>
 	<div id="toolbar">
-		<a href="#" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
+		<a href="javascript:addUser()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 		<a href="#" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 		<a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
 		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
+	</div>
+	<div class="easyui-dialog" id="dlg" data-options="closable:true,closed:true,buttons:'#dlg-button'" style="whidth:400px">
+		<form id="fm" method="post">
+			<div class="">   
+		        <label for="userName">用户名:</label>   
+		        <input class="easyui-validatebox" type="text" name="userName" data-options="required:true" />   
+		    </div>  
+			<div>   
+		        <label for="password">密码:</label>   
+		        <input class="easyui-validatebox" type="text" name="password" data-options="required:true" />   
+		    </div>  
+			<div>   
+		        <label for="trueName">真实姓名:</label>   
+		        <input class="easyui-validatebox" type="text" name="trueName" data-options="required:true" />   
+		    </div>  
+			<div>   
+		        <label for="email">邮箱:</label>   
+		        <input class="easyui-validatebox" type="text" name="email" data-options="required:true" />   
+		    </div>  
+			<div>   
+		        <label for="phone">手机号:</label>   
+		        <input class="easyui-validatebox" type="text" name="phone" data-options="required:true" />   
+		    </div>  
+			<div class="fitem">   
+		        <label for="roleName">角色:</label>   
+		        <input class="easyui-validatebox" type="text" name="roleName" data-options="required:true" />   
+		    </div>  
+		</form>
+	</div>
+	<div id = "dlg-button">
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok',text:'提交'" href="javascript:submit()"></a>
+		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel',text:'取消'" href="javascript:clear()"></a>
+		<a></a>
 	</div>
 	<script type="text/javascript">
 		function doSearch (value) {
@@ -67,6 +100,32 @@
 					);
 				}
 			})
+		}
+		function addUser() {
+			$("#dlg").dialog("open").dialog("setTitle",'添加');
+			$("#fm").form('clear');
+			url="${ctx}/user/addUser.action"
+		}
+		function submit() {
+			$('#fm').form("submit",{
+				url:url,
+				 onSubmit: function(){    
+				        // do some check    
+				        // return false to prevent submit;    
+				    },
+				success:function (data) {
+					var data = eval('(' + data + ')');  
+					if (data.status == 0) {
+						$.messager.alert("系统提示",data.msg);
+						$("#datagrid").datagrid("reload");
+					} else {
+						$.messager.alert("系统提示",data.msg);
+					} 
+				}
+			})
+		}
+		function clear() {
+			$('#fm').form('clear');
 		}
 	</script>
 </body>
