@@ -13,7 +13,7 @@
 				"userName":value
 			})
 		}
-		function deleteUser() {
+		function delete() {
 			var ids = Util.getSelectionsIds("#datagrid");
 			if (ids.length == 0) {
 				$.messager.alert("系统提示","请选择要删除的信息");
@@ -28,7 +28,6 @@
 						function (result) {
 							if (result.status == Util.SUCCESS) {
 								$.messager.alert("系统提示",result.msg);
-								$("#dialog").datagrid("")
 								$("#datagrid").datagrid("reload")
 							} else {
 								$.messager.alert("系统提示",result.msg);
@@ -109,7 +108,7 @@
 	<div id="toolbar">
 		<a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 		<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
-		<a href="javascript:deleteUser()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+		<a href="javascript:delete()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
 		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
 	</div>
 	<!-- toolbar结束-->
