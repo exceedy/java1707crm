@@ -45,4 +45,21 @@ public class UserController {
 	public ServletResponse updateUser (User user) {
 		return userService.updateUser(user);
 	}
+	@RequestMapping(value="isUser")
+	@ResponseBody
+	public ServletResponse isUser (String userName) {
+		return userService.isUser(userName);
+	}
+	
+	@RequestMapping(value="checkUserPassword")
+	@ResponseBody
+	public ServletResponse checkUserPassword(String name, String password) {
+		return userService.checkUserPassword(name, password);
+	}
+	
+	@RequestMapping(value="updatePassword")
+	@ResponseBody
+	public ServletResponse updatePassword (User user) {
+		return userService.updatePassword(user);
+	}
 }

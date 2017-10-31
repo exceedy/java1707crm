@@ -91,9 +91,14 @@
 			}
 		})
 	} 
-	 function doSearch (value) {
+	 function doSearch () {
 			$("#datagrid").datagrid("load",{
-				"name":value
+				"linkMan":$("#linkMan").val(),
+				"overview":$("#overview").val(),
+				"createMan":$("#createMan").val(),
+				"status":$("#status").val(),
+				'startTime':$('#startTime').val(),
+				"endTime":$('#endTime').val()
 			})
 		}
 	 var url;
@@ -139,14 +144,29 @@
 		
 		<!-- 表格按钮 -->
 		<div id="toolbar">
-			 <a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
-			<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
-			<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
-			<input class="easyui-searchbox" data-options="prompt:'产品名',searcher:doSearch" style="width:300px"></input> 
+			<div>
+				 <a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
+				<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
+				<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+			</div>
+			<div>
+				客户名称：<input type="text" id="linkMan" style="width:100px"/>
+				摘要：<input type="text" id="overview" style="width:100px"/>
+				创建人：<input type="text" id="createMan" style="width:100px"/>
+				创建时间段：<input class="easyui-datebox" id="startTime" data-options="sharedCalendar:'#cc'">
+					<input class="easyui-datebox" id="endTime" data-options="sharedCalendar:'#cc'">
+				分配状态： <select  class="easyui-combobox" id="status" >
+							<option value="">请选择</option>
+							<option value="1">已分配</option>
+							<option value="0">未分配</option>
+						</select>
+						<a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+			</div>
 		 </div>
+		 <div id="cc" class="easyui-calendar"></div>
 		 
 		 <!-- 对话窗口 -->
-		 <div class="easyui-dialog" id="dialog"  style="width:400px">
+		 <div class="easyui-dialog" id="dialog"  style="width:600px">
 		 	<form action="" id="form" method="post">
 		 		<table>
 		 			<tr>

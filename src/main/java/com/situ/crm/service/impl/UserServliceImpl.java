@@ -8,11 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
 import com.situ.crm.dao.UserMapper;
 import com.situ.crm.pojo.User;
 import com.situ.crm.pojo.UserExample;
+import com.situ.crm.pojo.UserExample.Criteria;
 import com.situ.crm.service.IUserService;
 import com.situ.crm.uitl.Util;
 
@@ -71,6 +73,52 @@ public class UserServliceImpl implements IUserService {
 			return  ServletResponse.creatSuccess("修改成功");
 		} 
 		return ServletResponse.creatError("修改失败");
+	}
+
+	public ServletResponse isUser(String userName) {
+		UserExample example = new UserExample();
+		example.createCriteria().andNameEqualTo(userName);
+		List<User> userList = userDao.selectByExample(example);
+		if (null == userList || userList.size() == 0) {
+			return ServletResponse.creatError();
+		}
+		return  ServletResponse.creatSuccess();
+	}
+
+	public ServletResponse checkUserPassword(String name, String password) {
+		UserExample example = new UserExample();
+		Criteria createCriteria = example.createCriteria();
+		if (StringUtil.isNotEmpty(name)) {
+			createCriteria.andNameEqualTo(name);
+		}
+		if (StringUtil.isNotEmpty(password)) {
+			createCriteria.andPasswordEqualTo(password);
+		}
+		List<User> userList = userDao.selectByExample(example);
+		if (null == userList || 0 == userList.size()) {
+			return ServletResponse.creatError();
+		}
+	return ServletResponse.creatSuccess();
+	}
+
+	public ServletResponse updatePassword(User user) {
+			
+		UserExample example = new UserExample();
+		Criteria createCriteria = example.createCriteria();
+		if (StringUtil.isNotEmpty(user.getName())) {
+			createCriteria.andNameEqualTo(user.getName());
+		}
+		try {
+			int result = userDao.updateByExampleSelective(user, example);
+			if (result > 0) {
+				return ServletResponse.creatSuccess("修改成功");
+			}
+			
+		} catch (Exception e) {
+			return ServletResponse.creatError("修改失败");
+		}
+		return ServletResponse.creatError("修改失败");
+		
 	}
 
 }

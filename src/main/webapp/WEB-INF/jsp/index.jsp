@@ -25,6 +25,107 @@
 				}
 				
 			}
+			var url;
+			function openPasswordModifyDialog() {
+				$("#dialog").dialog("open").dialog("setTitle",'修改密码');
+				$("#form").form('clear');
+				url="${ctx}/user/updatePassword.action"
+			};
+			//修改密码的对话框
+			$(function () {
+				$("#dialog").dialog({
+					closable:true,
+					buttons:[
+					         {text:'保存',
+					          handler:function () {
+					        	  doSave();
+					          }
+							},
+							{
+								text:'关闭',
+								handler:function () {
+									$("#dialog").dialog('close');
+								}
+							}
+					]
+				});
+			});
+			//验证用户名的规则
+			$.extend($.fn.validatebox.defaults.rules,{
+				nameEquals:{
+					validator: function (value, param) {
+					var flag;
+						$.ajax({
+							type:'post',
+							async:false,
+							url:'${ctx}/user/isUser.action',
+							data:"userName="+value,
+							dataType:"json",
+							success:function (data) {
+								if (data.status == Util.SUCCESS) {
+									flag=true;
+								}  else {
+									flag=false;
+								}
+							}
+						});
+							return flag;
+					},
+						message:'请输入正确的用户名'
+				}
+			});
+			//验证原密码是否正确
+			$.extend($.fn.validatebox.defaults.rules,{
+				passwordEquals:{
+					validator:function (value, param) {
+						var flag;
+						var name = $("#userName").val();
+						$.ajax({
+							type:'post',
+							async:false,
+							url:'${ctx}/user/checkUserPassword.action',
+							data:'password='+value+"&name="+name,
+							dataType:'json',
+							success:function (data) {
+								if (data.status == Util.SUCCESS) {
+									flag=true;
+								} else {
+									flag=false;
+								}
+							}
+						});
+						return flag;
+					},
+					message:'请输入正确的密码'
+				}
+			});
+			//验证新密码两次输入是否相同
+			$.extend($.fn.validatebox.defaults.rules, {    
+			    equals: {    
+			        validator: function(value,param){    
+			            return value == $(param[0]).val();    
+			        },    
+			        message: '密码不相同'   
+			    }    
+			});
+			//修改密码的提交
+			function doSave () {
+				$("#form").form("submit",{
+					url:url,
+					onSubmit:function () {
+						return $(this).form("validate")
+					},
+					success:function (result) {
+						var result = eval('('+ result +')');
+						if (result.status == Util.SUCCESS) {
+							$.messager.alert('系统提示',result.msg)
+							$("#dialog").dialog("close");
+						} else {
+							$.messager.alert('系统提示',result.msg)
+						}
+					}
+				})
+			}
 		</script>
 	</head>
 	<body class="easyui-layout" >
@@ -98,5 +199,35 @@
     	<div data-options="region:'south',split:false" style="height:25px;" align="center">
     		版权所有 Java1707
     	</div>   
+    		<div id="dialog" class="easyui-dialog" buttons="#dialog-button" closed="true" closable="true" style="width:400px">
+		 	<form action="" id="form" method="post">
+		 		<table>
+			 		<tr>
+						<td>
+			      			  用户名: 
+						</td>
+						<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+						<td>
+						        <input class="easyui-validatebox" type="text" id="userName" name="name" data-options="required:true" validType="nameEquals['#userName']" /><font color="red">*</font>   
+						</td>
+					</tr>
+					<tr>
+						 <td>密码:</td> 
+						 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+			        	<td><input class="easyui-validatebox" type="text" id="oldPassword"  data-options="required:true" validType="passwordEquals['#oldPassword']"/><font color="red">*</font></td>   
+			        </tr>
+			        <tr>
+						 <td>新密码:</td> 
+						 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+			        	<td><input class="easyui-validatebox" type="text" id="pwd" name="password" data-options="required:true" /><font color="red">*</font></td>   
+			        </tr>
+			        <tr>
+						 <td>确认新密码:</td> 
+						 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
+			        	<td><input class="easyui-validatebox" type="text" id="rpwd"  data-options="required:true" validType="equals['#pwd']"/><font color="red">*</font></td>   
+			        </tr>
+				</table>
+			</form>
+    	</div>
 	</body>
 </html>

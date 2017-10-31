@@ -1,5 +1,6 @@
 package com.situ.crm.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import com.situ.crm.common.ServletResponse;
 import com.situ.crm.dao.SaleChanceMapper;
 import com.situ.crm.pojo.SaleChance;
 import com.situ.crm.pojo.SaleChanceExample;
+import com.situ.crm.pojo.SaleChanceExample.Criteria;
 import com.situ.crm.service.ISaleChanceService;
 import com.situ.crm.uitl.Util;
 
@@ -22,17 +24,33 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 	@Autowired
 	private SaleChanceMapper saleChanceDao;
 	
-	public EasyUIDataGrid pageList(SaleChance saleChance, Integer rows, Integer page) {
+	public EasyUIDataGrid pageList(SaleChance saleChance, Integer rows, Integer page, Date startTime, Date endTime) {
 		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
 		
 		SaleChanceExample example =  new SaleChanceExample();
+		Criteria createCriteria = example.createCriteria();
 		//配置分页
 		PageHelper.startPage(page, rows);
 		//执行查询
-		if (StringUtils.isNotEmpty(saleChance.getCustomerName())) {
+		if (StringUtils.isNotEmpty(saleChance.getLinkMan())) {
 			//查询的条件
-			example.createCriteria().andCustomerNameLike(Util.formatLike(saleChance.getCustomerName()));
+			createCriteria.andLinkManLike(Util.formatLike(saleChance.getLinkMan()));
 		}
+		if (StringUtils.isNotEmpty(saleChance.getOverview())) {
+			//查询的条件
+			createCriteria.andOverviewLike(Util.formatLike(saleChance.getOverview()));
+		}
+		if (StringUtils.isNotEmpty(saleChance.getCreateMan())) {
+			//查询的条件
+			createCriteria.andCreateManLike(Util.formatLike(saleChance.getCreateMan()));
+		}
+		if (saleChance.getStatus() != null) {
+			createCriteria.andStatusEqualTo(saleChance.getStatus());
+		}
+		if (startTime != null && endTime != null) {
+			createCriteria.andCreateTimeBetween(startTime, endTime);
+			
+		} 
 		List<SaleChance> saleChanceList = saleChanceDao.selectByExample(example);
 		
 		PageInfo<SaleChance> pageInfo = new PageInfo<SaleChance>(saleChanceList);

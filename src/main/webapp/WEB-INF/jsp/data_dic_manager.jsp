@@ -78,6 +78,7 @@
 		 function clear() {
 			 $("#form").form("clear");
 		 }
+		 
 </script> 
 <body>
 	<!-- 数据表格 -->
@@ -110,7 +111,16 @@
 					 	valueField: 'dataDicName',
 					 	textField: 'dataDicName',
 					 	panelHeight:'auto',
-					 	editable:false  "/>
+					 	editable:false,
+					 	loadFilter:function (data) {
+					 		var obj={};
+					 		obj.value='';
+					 		obj.text='-请选择-';
+					 		data.splice(0,0,obj);
+					 		return data;
+					 		
+					 	}
+					 	  "/>
 		       数据字典值：<input type="text" id="dataDicValue"></input>
 		  <a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 		</div>

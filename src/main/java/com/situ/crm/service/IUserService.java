@@ -14,4 +14,10 @@ public interface IUserService {
 
 	ServletResponse updateUser(User user);
 
+	ServletResponse isUser(String userName);
+
+	ServletResponse checkUserPassword(String name, String password);
+
+	ServletResponse updatePassword(User user);
+
 }
