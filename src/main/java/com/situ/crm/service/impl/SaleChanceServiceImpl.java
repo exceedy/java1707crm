@@ -10,42 +10,42 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.dao.ProductMapper;
-import com.situ.crm.pojo.Product;
-import com.situ.crm.pojo.ProductExample;
-import com.situ.crm.service.IProductService;
+import com.situ.crm.dao.SaleChanceMapper;
+import com.situ.crm.pojo.SaleChance;
+import com.situ.crm.pojo.SaleChanceExample;
+import com.situ.crm.service.ISaleChanceService;
 import com.situ.crm.uitl.Util;
 
 @Service
-public class ProductServiceImpl implements IProductService {
+public class SaleChanceServiceImpl implements ISaleChanceService {
 
 	@Autowired
-	private ProductMapper productDao;
+	private SaleChanceMapper saleChanceDao;
 	
-	public EasyUIDataGrid pageList(Product product, Integer rows, Integer page) {
+	public EasyUIDataGrid pageList(SaleChance saleChance, Integer rows, Integer page) {
 		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
 		
-		ProductExample example =  new ProductExample();
+		SaleChanceExample example =  new SaleChanceExample();
 		//配置分页
 		PageHelper.startPage(page, rows);
 		//执行查询
-		if (StringUtils.isNotEmpty(product.getName())) {
+		if (StringUtils.isNotEmpty(saleChance.getCustomerName())) {
 			//查询的条件
-			example.createCriteria().andNameLike(Util.formatLike(product.getName()));
+			example.createCriteria().andCustomerNameLike(Util.formatLike(saleChance.getCustomerName()));
 		}
-		List<Product> productList = productDao.selectByExample(example);
+		List<SaleChance> saleChanceList = saleChanceDao.selectByExample(example);
 		
-		PageInfo<Product> pageInfo = new PageInfo<Product>(productList);
+		PageInfo<SaleChance> pageInfo = new PageInfo<SaleChance>(saleChanceList);
 		int total = (int)pageInfo.getTotal();
 		
 		dataGrid.setTotal(total);
-		dataGrid.setRows(productList);
+		dataGrid.setRows(saleChanceList);
 		
 		return dataGrid;
 	}
 
-	public ServletResponse add(Product product) {
-		int result = productDao.insert(product);
+	public ServletResponse add(SaleChance saleChance) {
+		int result = saleChanceDao.insert(saleChance);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("添加成功");
 		}
@@ -56,7 +56,7 @@ public class ProductServiceImpl implements IProductService {
 		String[] idStr = ids.split(",");
 		int result = 0;
 		for (String id : idStr) {
-			 result += productDao.deleteByPrimaryKey(Integer.parseInt(id));
+			 result += saleChanceDao.deleteByPrimaryKey(Integer.parseInt(id));
 		}
 		if (result > 0) {
 			return ServletResponse.creatSuccess("删除成功");
@@ -64,8 +64,8 @@ public class ProductServiceImpl implements IProductService {
 		return ServletResponse.creatError("删除失败");
 	}
 
-	public ServletResponse update(Product product) {
-		int result = productDao.updateByPrimaryKey(product);
+	public ServletResponse update(SaleChance saleChance) {
+		int result = saleChanceDao.updateByPrimaryKey(saleChance);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("修改成功");
 		}

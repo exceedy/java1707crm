@@ -7,42 +7,42 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.pojo.Product;
-import com.situ.crm.service.IProductService;
+import com.situ.crm.pojo.SaleChance;
+import com.situ.crm.service.ISaleChanceService;
 
 @Controller
-@RequestMapping(value="product")
-public class ProductController {
+@RequestMapping(value="saleChance")
+public class SaleChanceController {
 
 	@Autowired
-	private IProductService productService;
+	private ISaleChanceService saleChanceService;
 	
 	@RequestMapping(value="index")
 	public String index () {
-		return "product_manager";
+		return "sale_chance_manager";
 	}
 	
 	@RequestMapping(value="pageList")
 	@ResponseBody
-	public EasyUIDataGrid pageList(Integer page, Integer rows,Product product) {
-		return productService.pageList(product, rows, page);
+	public EasyUIDataGrid pageList(Integer page, Integer rows,SaleChance saleChance) {
+		return saleChanceService.pageList(saleChance, rows, page);
 	}
 	
 	@RequestMapping(value="add")
 	@ResponseBody
-	public ServletResponse add(Product product) {
-		return productService.add(product);
+	public ServletResponse add(SaleChance saleChance) {
+		return saleChanceService.add(saleChance);
 	}
 	
 	@RequestMapping(value="delete")
 	@ResponseBody
 	public ServletResponse delete(String ids) {
-		return productService.delete(ids);
+		return saleChanceService.delete(ids);
 	}
 	
 	@RequestMapping(value="update")
 	@ResponseBody
-	public ServletResponse update(Product product) {
-		return productService.update(product);
+	public ServletResponse update(SaleChance saleChance) {
+		return saleChanceService.update(saleChance);
 	}
 }

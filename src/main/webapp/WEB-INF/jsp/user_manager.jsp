@@ -10,10 +10,10 @@
 <script type="text/javascript">
 		function doSearch (value) {
 			$("#datagrid").datagrid("load",{
-				"userName":value
+				"name":value
 			})
 		}
-		function delete() {
+		function remove() {
 			var ids = Util.getSelectionsIds("#datagrid");
 			if (ids.length == 0) {
 				$.messager.alert("系统提示","请选择要删除的信息");
@@ -41,7 +41,7 @@
 		var url;
 		function openAddDialog() {
 			$("#dlg").dialog("open").dialog("setTitle",'添加');
-			$("#fm").form('clear');
+			$("#form").form('clear');
 			url="${ctx}/user/add.action"
 		}
 		
@@ -53,12 +53,12 @@
 			}
 			$("#dlg").dialog("open").dialog("setTitle","修改");
 			var row = selected[0];
-			$("#fm").form("load",row);
+			$("#form").form("load",row);
 			url="${ctx}/user/update.action";
 		}
 		
 		function doSave() {
-			$('#fm').form("submit",{
+			$('#form').form("submit",{
 				url:url,
 				 onSubmit: function(){    
 				        // do some check    
@@ -81,7 +81,7 @@
 			})
 		}
 		function clear() {
-			$('#fm').form('clear');
+			$('#form').form('clear');
 		}
 	</script>
 <body>
@@ -94,7 +94,7 @@
 			<tr>
 				<th data-options="field:'cb',align:'center',checkbox:true" ></th>
 				<th data-options="field:'id',align:'center',width:80" >编号</th>
-				<th data-options="field:'userName',align:'center',width:80">用户名</th>
+				<th data-options="field:'name',align:'center',width:80">用户名</th>
 				<th data-options="field:'password',align:'center',width:80">密码</th>
 				<th data-options="field:'trueName',align:'center',width:80">真实姓名</th>
 				<th data-options="field:'email',align:'center',width:80">邮箱</th>
@@ -108,13 +108,13 @@
 	<div id="toolbar">
 		<a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 		<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
-		<a href="javascript:delete()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+		<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
 		<input class="easyui-searchbox" data-options="prompt:'用户名',searcher:doSearch" style="width:300px"></input>
 	</div>
 	<!-- toolbar结束-->
 	<!-- dialog开始-->
 	<div class="easyui-dialog" id="dlg" data-options="closable:true,closed:true,buttons:'#dlg-button'" style="whidth:400px">
-		<form id="fm" method="post">
+		<form id="form" method="post">
 			<input type="hidden" id="id" name="id"/>
 			<table> 
 				<tr>
@@ -123,7 +123,7 @@
 					</td>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 					<td>
-					        <input class="easyui-validatebox" type="text" name="userName" data-options="required:true" /><font color="red">*</font>   
+					        <input class="easyui-validatebox" type="text" name="name" data-options="required:true" /><font color="red">*</font>   
 					</td>
 					 <td>密码:</td> 
 					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
@@ -161,7 +161,6 @@
 	<div id = "dlg-button">
 		<a class="easyui-linkbutton" data-options="iconCls:'icon-ok',text:'提交'" href="javascript:doSave()"></a>
 		<a class="easyui-linkbutton" data-options="iconCls:'icon-cancel',text:'清空'" href="javascript:clear()"></a>
-		<a></a>
 	</div>
 	<!-- dlg-button结束-->
 	

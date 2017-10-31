@@ -28,8 +28,8 @@ public class UserServliceImpl implements IUserService {
 		//配置分页
 		PageHelper.startPage(page, rows);
 		//执行查询
-		if (StringUtils.isNotEmpty(user.getUserName())) {
-			example.createCriteria().andUserNameLike(Util.formatLike(user.getUserName()));
+		if (StringUtils.isNotEmpty(user.getName())) {
+			example.createCriteria().andNameLike(Util.formatLike(user.getName()));
 		}
 		List<User> userList = userDao.selectByExample(example);
 		//total

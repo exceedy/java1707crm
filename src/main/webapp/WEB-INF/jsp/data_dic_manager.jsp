@@ -18,7 +18,7 @@
 		$.messager.layer("系统提示","确定要删除吗",function (r) {
 			if (r) {
 				$.post(
-					"${ctx}/product/delete.action",
+					"${ctx}/dataDic/delete.action",
 					{ids:ids},
 					function (result) {
 						if (result.status == Util.SUCCESS) {
@@ -33,16 +33,17 @@
 			}
 		})
 	} 
-	 function doSearch (value) {
+	 function  doSearch() {
 			$("#datagrid").datagrid("load",{
-				"name":value
-			})
+				"dataDicName":$("#dataDicName").val(),
+				"dataDicValue":$("#dataDicValue").val()
+			});
 		}
 	 var url;
 	 function openAddDialog() {
 		 $("#dialog").dialog("open").dialog("setTitle","添加");
 		 $("#form").form("clear");
-		 url="$(ctx)/product/add.action"
+		 url="$(ctx)/dataDic/add.action"
 	 }
 	 function openUpdateDialog() {
 		 var selected = $("#datagrid").datagrid("getSelections");
@@ -52,16 +53,16 @@
 		 }
 		 $("#dialog").dialog("open").dialog("setTitle","修改");
 		 $("#form").form("load",selected[0]);
-		 url = '${ctx}/product/update.action';
+		 url = '${ctx}/dataDic/update.action';
 	 }
 	 
 	 function doSave() {
 		 $("#form").form("submit",{
 			 url:url,
 			 onSubmit: function () {
-				 return $(this).form("validate");                                                                                                                                                                                                                                                                                                           
+				 return $(this).form("validate");
 			 },
-			   
+			    
 			 success:function (result) {
 				 var result = eval('('+ result +')');
 				 if (result.status == Util.SUCCESS) {
@@ -83,27 +84,37 @@
 		<table id="datagrid" class="easyui-datagrid" rownumbers="true" fitColumns="true"
 		pagination="true"
 		checkOnSelect="true"
-		data-options="fit:true,singleSelect:false,url:'${ctx}/product/pageList.action',method:'get',toolbar:'#toolbar'">
+		data-options="fit:true,singleSelect:false,url:'${ctx}/dataDic/pageList.action',method:'get',toolbar:'#toolbar'">
 		<thead>
 			<thead>
 				<tr>
 					<th data-options="field:'cb',align:'center',checkbox:true" ></th>
 					<th data-options="field:'id',align:'center',width:100" >编号</th>
-					<th data-options="field:'name',align:'center',width:100" >产品名称</th>
-					<th data-options="field:'model',align:'center',width:100" >型号</th>
-					<th data-options="field:'unit',align:'center',width:100" >单位</th>
-					<th data-options="field:'price',align:'center',width:100" >价格</th>
-					<th data-options="field:'store',align:'center',width:100" >库存</th>
-					<th data-options="field:'remarks  ',align:'center',width:100" >备注</th>
+					<th data-options="field:'dataDicName',align:'center',width:100" >数据字典名</th>
+					<th data-options="field:'dataDicValue',align:'center',width:100" >数据字典值</th>
 				</tr>
 			</thead>
 		</table>
 		<!-- 表格按钮 -->
 		<div id="toolbar">
+		<div>
 			 <a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 			<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 			<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
-			<input class="easyui-searchbox" data-options="prompt:'产品名',searcher:doSearch" style="width:300px"></input> 
+		</div>
+		<div>
+			<div>
+			数据字典名：<input type="text" id="dataDicName" class="easyui-combobox"
+					 data-options="
+					 	url:'${ctx}/dataDic/findDataDicName.action',
+					 	valueField: 'dataDicName',
+					 	textField: 'dataDicName',
+					 	panelHeight:'auto',
+					 	editable:false  "/>
+		       数据字典值：<input type="text" id="dataDicValue"></input>
+		  <a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+		</div>
+		</div>
 		 </div>
 		 
 		 <!-- 对话窗口 -->
@@ -112,39 +123,15 @@
 		 		<table>
 		 			<tr>
 					<td>
-		      			  产品名称: 
+		      			  数据字典名称: 
 					</td>
 					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 					<td>
-					        <input class="easyui-validatebox" type="text" name="name" data-options="required:true" /><font color="red">*</font>   
+					        <input class="easyui-validatebox" type="text" name="dataDicName" data-options="required:true" /><font color="red">*</font>   
 					</td>
-					 <td>型号:</td> 
+					 <td>数据字典值:</td> 
 					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="model" data-options="required:true" /><font color="red">*</font></td>   
-				</tr>
-		 			<tr>
-					<td>
-		      			  单位: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="unit" data-options="required:true" /><font color="red">*</font>   
-					</td>
-					 <td>价格:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="price" data-options="required:true" /><font color="red">*</font></td>   
-				</tr>
-		 			<tr>
-					<td>
-		      			  库存: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="store" data-options="required:true" /><font color="red">*</font>   
-					</td>
-					 <td>备注:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="remarks" data-options="required:true" /><font color="red">*</font></td>   
+		        	<td><input class="easyui-validatebox" type="text" name="dataDicValue" data-options="required:true" /><font color="red">*</font></td>   
 				</tr>
 		 		</table>
 		 	</form>
