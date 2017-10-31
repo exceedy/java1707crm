@@ -1,6 +1,7 @@
 package com.situ.crm.service;
 
 import java.util.Date;
+import java.util.List;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
@@ -15,5 +16,6 @@ public interface ISaleChanceService {
 	ServletResponse delete(String ids);
 
 	ServletResponse update(SaleChance saleChance);
+
 
 }

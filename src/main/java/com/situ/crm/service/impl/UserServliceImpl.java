@@ -121,4 +121,8 @@ public class UserServliceImpl implements IUserService {
 		
 	}
 
+	public List<User> getCustomerManagerList() {
+		return userDao.getCustomerManagerList();
+	}
+
 }

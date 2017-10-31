@@ -101,12 +101,24 @@
 				"endTime":$('#endTime').val()
 			})
 		}
+	 //指定分配人时的时间
+	 $(function () {
+		 $("#assignMan").combobox({
+			 onClick:function () {
+				 $("#assignTime").val(Util.getCurrentDateTime());
+			 }
+		 })
+	 });
 	 var url;
+	 //添加弹出
 	 function openAddDialog() {
 		 $("#dialog").dialog("open").dialog("setTitle","添加");
 		 $("#form").form("clear");
+		 $("#createMan").val("${user.name}");
+		 $("#createTime").val(Util.getCurrentDateTime());
 		 url="$(ctx)/saleChance/add.action"
 	 }
+	 //修改弹出
 	 function openUpdateDialog() {
 		 var selected = $("#datagrid").datagrid("getSelections");
 		 if (selected.length == 0) {
@@ -117,7 +129,7 @@
 		 $("#form").form("load",selected[0]);
 		 url = '${ctx}/saleChance/update.action';
 	 }
-	 
+	 //修改和添加的提交
 	 function doSave() {
 		 $("#form").form("submit",{
 			 url:url,
@@ -165,95 +177,58 @@
 		 </div>
 		 <div id="cc" class="easyui-calendar"></div>
 		 
-		 <!-- 对话窗口 -->
-		 <div class="easyui-dialog" id="dialog"  style="width:600px">
-		 	<form action="" id="form" method="post">
-		 		<table>
-		 			<tr>
-					<td>
-		      			  客户名称: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="customerName" data-options="required:true" /><font color="red">*</font>   
-					</td>
-					 <td>机会来源:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="chanceSource"  /></td>   
-				</tr>
-		 			<tr>
-					<td>
-		      			  联系人: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="linkMan" data-options="required:true" /><font color="red">*</font>   
-					</td>
-					 <td>联系方式:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="linkPhone" data-options="required:true" /><font color="red">*</font></td>   
-				</tr>
-		 			<tr>
-					<td>
-		      			  成功几率: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="successRate" data-options="required:true" /><font color="red">*</font>   
-					</td>
-				</tr>
-		 			<tr>
-					<td>
-		      			  摘要: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="overview" style="width:300px"  />   
-					</td>
-				</tr>
-		 			<tr>
-					<td>
-		      			  机会描述: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <textarea class="easyui-validatebox"  name="description" style="width:300px"  />  
-					</td>
-				</tr>
-				<tr>
-					<td>
-		      			  创建人: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-validatebox" type="text" name="createMan" data-options="required:true" /><font color="red">*</font>   
-					</td>
-					 <td>创建时间:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="createTime" data-options="required:true" /><font color="red">*</font>   </td>   
-				</tr>
-				<tr>
-					<td>
-		      			  指派给: 
-					</td>
-					<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
-					<td>
-					        <input class="easyui-combobox"  data-options="
-					        	url:'${ctx}/saleChance/findSaleChanceAssignMan.action',
-					        	valueField:'assignMan',
-					        	textField:'assignMan',
-					        	panelHeight:'auto',
-					 		editable:false 
-					        " /><font color="red">*</font>   
-					</td>
-					 <td>指派时间:</td> 
-					 <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>  
-		        	<td><input class="easyui-validatebox" type="text" name="assigeTime" data-options="required:true" /><font color="red">*</font>   </td>   
-				</tr>
-				
-		 		 </table>
-		 	</form>
-		 </div>
+		<!-- 添加和修改的dialog 开始 -->
+	<div id="dialog" style="width:650;height:280,padding: 10px 20px">
+		<form action="" id="form" method="post">
+			<input type="hidden" id="id" name="id"/>
+			<table cellspacing="8px">
+		   		<tr>
+		   			<td>客户名称：</td>
+		   			<td><input type="text" id="customerName" name="customerName" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>机会来源</td>
+		   			<td><input type="text" id="chanceSource" name="chanceSource" /></td>
+		   		</tr>
+		   		<tr>
+		   			<td>联系人：</td>
+		   			<td><input type="text" id="linkMan" name="linkMan" /></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>联系电话：</td>
+		   			<td><input type="text" id="linkPhone" name="linkPhone" /></td>
+		   		</tr>
+		   		<tr>
+		   			<td>成功几率(%)：</td>
+		   			<td><input type="text" id="successRate" name="successRate" class="easyui-numberbox" data-options="min:0,max:100" required="true"/>&nbsp;<font color="red">*</font></td>
+		   			<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   		</tr>
+		   		<tr>
+		   			<td>概要：</td>
+		   			<td colspan="4"><input type="text" id="overview" name="overview" style="width: 420px"/></td>
+		   		</tr>
+		   		<tr>
+		   			<td>机会描述：</td>
+		   			<td colspan="4">
+		   				<textarea rows="5" cols="50" id="description" name="description"></textarea>
+		   			</td>
+		   		</tr>
+		   		<tr>
+		   			<td>创建人：</td>
+		   			<td><input type="text" editable="false" id="createMan" name="createMan" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>创建时间：</td>
+		   			<td><input type="text" readonly="true" id="createTime" name="createTime"/>&nbsp;<font color="red">*</font></td>
+		   		</tr>
+		   		<tr>
+		   			<td>指派给：</td>
+		   			<td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/saleChance/CustomerManagerList.action'"/></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>指派时间：</td>
+		   			<td><input type="text" id="assignTime" name="assignTime" readonly="readonly"/></td>
+		   		</tr>
+		   	</table>
+		</form>
+	</div>
+	<!-- 添加和修改的dialog 结束 -->
 		 
 </body>
 </html>

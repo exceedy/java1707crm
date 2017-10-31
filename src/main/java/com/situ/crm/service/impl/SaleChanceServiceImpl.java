@@ -63,6 +63,13 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 	}
 
 	public ServletResponse add(SaleChance saleChance) {
+		String assignMan = saleChance.getAssignMan();
+		if (assignMan != null ) {//判断是否分配了指派人
+			saleChance.setStatus(1);
+		} else {
+			saleChance.setStatus(0);
+		}
+		
 		int result = saleChanceDao.insert(saleChance);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("添加成功");
@@ -89,5 +96,6 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 		}
 		return ServletResponse.creatError("修改失败");
 	}
+
 
 }

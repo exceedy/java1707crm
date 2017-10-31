@@ -110,6 +110,9 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="getCustomerManagerList" resultMap="BaseResultMap">
+  		SELECT true_name FROM USER WHERE role_name = "客户经理";
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     <!--
       WARNING - @mbggenerated
