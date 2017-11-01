@@ -27,9 +27,8 @@
 		</script>
 	</head>
 	<body class="easyui-layout" >
-		<p>登录</p>
 	<div style="margin:20px 0;"></div>
-	<div class="easyui-panel" title="Login to system" style="width:400px;padding:30px 70px 20px 70px">
+	<div class="easyui-panel" title="登录" style="width:400px;padding:30px 70px 20px 70px">
 		<form action="" id = "form">
 			<div style="margin-bottom:10px">
 				<input class="easyui-textbox" name="name" style="width:100%;height:40px;padding:12px" data-options="prompt:'Username',iconCls:'icon-man',iconWidth:38">

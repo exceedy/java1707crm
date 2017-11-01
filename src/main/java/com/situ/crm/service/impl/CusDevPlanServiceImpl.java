@@ -15,11 +15,11 @@ import com.situ.crm.dao.SaleChanceMapper;
 import com.situ.crm.pojo.SaleChance;
 import com.situ.crm.pojo.SaleChanceExample;
 import com.situ.crm.pojo.SaleChanceExample.Criteria;
-import com.situ.crm.service.ISaleChanceService;
+import com.situ.crm.service.ICusDevPlanService;
 import com.situ.crm.uitl.Util;
 
 @Service
-public class SaleChanceServiceImpl implements ISaleChanceService {
+public class CusDevPlanServiceImpl implements ICusDevPlanService {
 
 	@Autowired
 	private SaleChanceMapper saleChanceDao;
@@ -51,6 +51,7 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 			createCriteria.andCreateTimeBetween(startTime, endTime);
 			
 		} 
+		createCriteria.andStatusEqualTo(1);
 		List<SaleChance> saleChanceList = saleChanceDao.selectByExample(example);
 		
 		PageInfo<SaleChance> pageInfo = new PageInfo<SaleChance>(saleChanceList);
@@ -64,8 +65,7 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 
 	public ServletResponse add(SaleChance saleChance) {
 		String assignMan = saleChance.getAssignMan();
-		System.out.println(assignMan);
-		if (assignMan != null && !"".equals(assignMan)) {//判断是否分配了指派人
+		if (assignMan != null ) {//判断是否分配了指派人
 			saleChance.setStatus(1);
 			saleChance.setDevResult(1);
 		} else {
@@ -93,15 +93,6 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 	}
 
 	public ServletResponse update(SaleChance saleChance) {
-		String assignMan = saleChance.getAssignMan();
-		System.out.println(assignMan);
-		if (assignMan != null && !"".equals(assignMan)) {//判断是否分配了指派人
-			saleChance.setStatus(1);
-			saleChance.setDevResult(1);
-		} else {
-			saleChance.setStatus(0);
-			saleChance.setDevResult(0);
-		}
 		int result = saleChanceDao.updateByPrimaryKey(saleChance);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("修改成功");

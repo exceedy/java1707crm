@@ -37,7 +37,7 @@ public class LoginServiceImpl implements ILoginService {
 		if (userList != null || userList.size() != 0) {
 			for (User resUser : userList) {
 				if (resUser.getName().equals(user.getName()) && resUser.getPassword().equals(user.getPassword())) {
-					session.setAttribute("user", resUser);
+					session.setAttribute("currentUser", resUser);
 					return ServletResponse.creatSuccess("登录成功");
 				} else if (resUser.getName().equals(user.getName()) && !resUser.getPassword().equals(user.getPassword())) {
 					return ServletResponse.creatError("密码错误");

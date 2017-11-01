@@ -11,39 +11,53 @@
  
  	$(function () {
  		$("#datagrid").datagrid({
- 			url:'${ctx}/saleChance/pageList.action',
+ 			url:'${ctx}/cusDevPlan/pageList.action',
  			rownumbers:true,
  			fitColumns:true,
  			pagination:true,
  			checkOnSelect:true,
  			fit:true,
+ 			toolbar:'#toolbar',
  			singleSelect:false,
  			method:'get',
- 			toolbar:'#toolbar',
  			columns:[[
  			        	{field:'cb',align:'center',checkbox:true},
  			        	{field:'id',align:'center',width:100,title:'编号'},
  			        	{field:'customerName',align:'center',width:100,title:'客户名称'},
  			        	{field:'overview',align:'center',width:100,title:'摘要'},
  			        	{field:'linkMan',align:'center',width:100,title:'联系人'},
- 			        	{field:'linkPhone  ',align:'center',width:100,title:'联系方式'},
  			        	{field:'createMan  ',align:'center',width:100,title:'创建人'},
  			        	{field:'createTime',align:'center',width:100,title:'创建时间'},
- 			        	{field:'status',align:'center',width:100, title:'状态',
+ 			        	{field:'assignMan  ',align:'center',width:100,title:'指派人人'},
+ 			        	{field:'assignTime',align:'center',width:100,title:'指派时间时间'},
+ 			        	{field:'devResult',align:'center',width:100, title:'状态',
  			        		formatter: function(value,row,index){
- 			   				if (value == 1){
- 			   					return '已分配';
- 			   				} else  {
- 			   					return '未分配';
+ 			   				if (value == 0){
+ 			   					return '未开发';
+ 			   				} else if (value == 1) {
+ 			   					return '开发中';
+ 			   				} else if (value == 2) {
+ 			   					return '开发成功';
+ 			   				} else if (value == 3) {
+ 			   					return '开发失败';
  			   				}
  			   			}
- 			        	}
+ 			        	},
+ 			        	{field:'a',align:'center',width:100, title:'操作',
+ 			        		formatter: function(value,row,index){
+ 			        			if (row.devResult == 0 || row.decResult == 1) {
+ 			        				return "<a href='javascript:openCusDevPlanTab("+ row.id +")'>开发</a>"
+ 			        			} else {
+ 			        				return "<a href='javascript:openCusDevPlanInfoTab("+ row.id +")'>查看详情信息</a>"
+ 			        			}
+ 			        		}}
  			        	
  			        	
  			     ]]
  		})
  		
  	})
+ 	
  	$(function () {
  		$("#dialog").dialog({
  			closed:true,
@@ -69,21 +83,21 @@
 	 function remove() {
 		var ids = Util.getSelectionsIds("#datagrid");
 		if (ids.length == 0) {
-			$.messager.alert("系统提示","请选择要删除的信息");
+			$.messager.layer("系统提示","请选择要删除的信息");
 			return;
 		}
 		
-		$.messager.alert("系统提示","确定要删除吗",function (r) {
+		$.messager.layer("系统提示","确定要删除吗",function (r) {
 			if (r) {
 				$.post(
-					"${ctx}/saleChance/delete.action",
+					"${ctx}/cusDevPlan/delete.action",
 					{ids:ids},
 					function (result) {
 						if (result.status == Util.SUCCESS) {
-							$.messager.alert(result.msg);
+							$.messager.layer(result.msg);
 							$("#datagrid").datagrid('reload');
 						} else {
-							$.messager.alert(result.msg);
+							$.messager.layer(result.msg);
 						}
 					},
 					"json"
@@ -114,21 +128,20 @@
 	 function openAddDialog() {
 		 $("#dialog").dialog("open").dialog("setTitle","添加");
 		 $("#form").form("clear");
-		 $("#createMan").val(${currentUser.name});
-		 $("#createMan").text(${currentUser.name})
+		 $("#createMan").val("${user.name}");
 		 $("#createTime").val(Util.getCurrentDateTime());
-		 url="${ctx}/saleChance/add.action"
+		 url="$(ctx)/cusDevPlan/add.action"
 	 }
 	 //修改弹出
 	 function openUpdateDialog() {
 		 var selected = $("#datagrid").datagrid("getSelections");
 		 if (selected.length == 0) {
-			 $.messager.alert("系统提示","请选择要修改的信息");
+			 $.messager.layer("系统提示","请选择要修改的信息");
 			 return;
 		 }
 		 $("#dialog").dialog("open").dialog("setTitle","修改");
 		 $("#form").form("load",selected[0]);
-		 url = '${ctx}/saleChance/update.action';
+		 url = '${ctx}/cusDevPlan/update.action';
 	 }
 	 //修改和添加的提交
 	 function doSave() {
@@ -141,15 +154,25 @@
 			 success:function (result) {
 				 var result = eval('('+ result +')');
 				 if (result.status == Util.SUCCESS) {
-					 $.messager.alert(result.msg);
+					 $.messager.layer(result.msg);
 					 $("#dialog").dialog("close");
 					 $("#datagrid").datagrid("reload");
 				 } else {
-					 $.messager.alert(result.msg);
+					 $.messager.layer(result.msg);
 				 }
 			 }
 		 })
 	 }
+	 
+	//可以修改添加开发项
+		function openCusDevPlanTab(id){
+			 window.parent.openTab('客户开发计划项管理','${ctx}/cusDevPlanItem/index.action?saleChanceId='+id,'icon-khkfjh');
+		}
+		 
+		//只能查看开发信息
+		function openCusDevPlanInfoTab(id){
+			window.parent.openTab('查看客户开发计划项','${ctx}/cusDevPlanItem/index.action?saleChanceId='+id+'&show=true','icon-khkfjh');
+		}
 </script> 
 <body>
 	<!-- 数据表格 -->
@@ -157,11 +180,11 @@
 		
 		<!-- 表格按钮 -->
 		<div id="toolbar">
-			<div>
+			<!-- <div>
 				 <a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 				<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 				<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
-			</div>
+			</div> -->
 			<div>
 				客户名称：<input type="text" id="linkMan" style="width:100px"/>
 				摘要：<input type="text" id="overview" style="width:100px"/>
@@ -214,14 +237,14 @@
 		   		</tr>
 		   		<tr>
 		   			<td>创建人：</td>
-		   			<td><input type="text" editable="false" id="createMan" name="createMan" class="easyui-validatebox" />&nbsp;<font color="red">*</font></td>
+		   			<td><input type="text" editable="false" id="createMan" name="createMan" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
 		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		   			<td>创建时间：</td>
 		   			<td><input type="text" readonly="true" id="createTime" name="createTime"/>&nbsp;<font color="red">*</font></td>
 		   		</tr>
 		   		<tr>
 		   			<td>指派给：</td>
-		   			<td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/user/getCustomerManagerList.action'"/></td>
+		   			<td><input class="easyui-combobox" id="assignMan" name="assignMan" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/user/CustomerManagerList.action'"/></td>
 		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		   			<td>指派时间：</td>
 		   			<td><input type="text" id="assignTime" name="assignTime" readonly="readonly"/></td>

@@ -135,7 +135,7 @@
 				<tr>
 					<td width="50%"><img alt="logo"
 						src="${pageContext.request.contextPath}/images/bglogo.png"></td>
-					<td valign="bottom" align="right" width="50%"><font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.userName }</font>【${currentUser.trueName }】【${currentUser.roleName }】
+					<td valign="bottom" align="right" width="50%"><font size="3">&nbsp;&nbsp;<strong>欢迎：</strong>${currentUser.name }</font>【${currentUser.trueName }】【${currentUser.roleName }】
 					</td>
 				</tr>
 			</table>
@@ -152,7 +152,7 @@
 					data-options="plain:true,iconCls:'icon-yxjhgl'"
 					style="width: 150px">营销机会管理</a> 
 			<a
-					href="javascript:openTab('客户开发计划','cusdevplanManage.jsp','icon-khkfjh')"
+					href="javascript:openTab('客户开发计划','${ctx}/cusDevPlan/index.action','icon-khkfjh')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khkfjh'"
 					style="width: 150px">客户开发计划</a>
