@@ -62,5 +62,10 @@ public class CustomerController {
 		return customerService.update(customer);
 	}
 	
+	@RequestMapping(value="findById")
+	@ResponseBody
+	public ServletResponse findById(Integer id) {
+		return customerService.findById(id);
+	}
 	
 }

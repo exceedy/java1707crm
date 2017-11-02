@@ -138,6 +138,15 @@
 			 }
 		 })
 	 }
+	 function openTab (name,path,icon) {
+		 var select = $("#datagrid").datagrid("getSelected");
+		 if (select == null) {
+			 $.messager.alert("请选择要查看的客户信息");
+			 return;
+		 }
+		 var customerId = select.id;
+		 window.parent.openTab(name,'${ctx}/'+path+'/index.action?customerId='+customerId,icon);
+	 }
 </script> 
 <body>
 	<!-- 数据表格 -->
@@ -149,10 +158,14 @@
 				 <a href="javascript:openAddDialog()" class="easyui-linkbutton" iconCls="icon-add" >添加</a>
 				<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 				<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
+				<a href="javascript:openTab('联系人管理','customerLinkman','icon-lxr')" class="easyui-linkbutton" iconCls="icon-lxr" >联系人管理</a>
+				<a href="javascript:openTab('交往记录管理','customerContact','icon-jwjl')" class="easyui-linkbutton" iconCls="icon-jwjl" >交往记录管理</a>
+				<a href="javascript:openTab('历史订单管理','customerOrder','icon-lsdd')" class="easyui-linkbutton" iconCls="icon-lsdd" >历史订单管理</a>
 			</div>
 			<div>
 				客户名称：<input type="text" id="name" style="width:100px"/>
 				客户编号：<input type="text" id="num" style="width:100px"/>
+				<a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 			</div>
 		 </div>
 		 

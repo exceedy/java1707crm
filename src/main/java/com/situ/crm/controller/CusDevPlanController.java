@@ -59,4 +59,10 @@ public class CusDevPlanController {
 	public ServletResponse update(CusDevPlan cusDevPlan) {
 		return cusDevPlaService.update(cusDevPlan);
 	}
+	
+	@RequestMapping(value="deleteById")
+	@ResponseBody
+	public ServletResponse deleteById(Integer id) {
+		return cusDevPlaService.deleteById(id);
+	}
 }

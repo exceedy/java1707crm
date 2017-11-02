@@ -80,6 +80,14 @@ public class CustomerServiceImpl implements ICustomerService {
 		return ServletResponse.creatError("修改失败");
 	}
 
+	public ServletResponse findById(Integer id) {
+		Customer data = customerDao.selectByPrimaryKey(id);
+		if (data != null) {
+			return ServletResponse.creatSuccess(data);
+		}
+		return ServletResponse.creatError();
+	}
+
 
 
 

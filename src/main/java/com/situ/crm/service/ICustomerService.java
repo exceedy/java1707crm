@@ -17,6 +17,8 @@ public interface ICustomerService {
 
 	ServletResponse update(Customer customer);
 
+	ServletResponse findById(Integer id);
+
 
 
 

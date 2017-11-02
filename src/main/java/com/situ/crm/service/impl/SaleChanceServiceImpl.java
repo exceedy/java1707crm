@@ -31,10 +31,9 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 		Criteria createCriteria = example.createCriteria();
 		//配置分页
 		PageHelper.startPage(page, rows);
-		//执行查询
-		if (StringUtils.isNotEmpty(saleChance.getLinkMan())) {
+		if (StringUtils.isNotEmpty(saleChance.getCustomerName())) {
 			//查询的条件
-			createCriteria.andLinkManLike(Util.formatLike(saleChance.getLinkMan()));
+			createCriteria.andCustomerNameLike(Util.formatLike(saleChance.getCustomerName()));
 		}
 		if (StringUtils.isNotEmpty(saleChance.getOverview())) {
 			//查询的条件
@@ -52,7 +51,6 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 			
 		} 
 		List<SaleChance> saleChanceList = saleChanceDao.selectByExample(example);
-		
 		PageInfo<SaleChance> pageInfo = new PageInfo<SaleChance>(saleChanceList);
 		int total = (int)pageInfo.getTotal();
 		

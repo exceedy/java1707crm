@@ -16,6 +16,7 @@ public interface ICustomerLossMeasureService {
 	ServletResponse delete(String ids);
 
 	ServletResponse update(CustomerLossMeasure customerLossMeasure);
-
+	
+	ServletResponse deleteById (Integer id);
 
 }

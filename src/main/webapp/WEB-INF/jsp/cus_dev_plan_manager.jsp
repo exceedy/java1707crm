@@ -26,9 +26,9 @@
  			        	{field:'customerName',align:'center',width:100,title:'客户名称'},
  			        	{field:'overview',align:'center',width:100,title:'摘要'},
  			        	{field:'linkMan',align:'center',width:100,title:'联系人'},
- 			        	{field:'createMan  ',align:'center',width:100,title:'创建人'},
+ 			        	{field:'createMan',align:'center',width:100,title:'创建人'},
  			        	{field:'createTime',align:'center',width:100,title:'创建时间'},
- 			        	{field:'assignMan  ',align:'center',width:100,title:'指派人人'},
+ 			        	{field:'assignMan',align:'center',width:100,title:'指派人'},
  			        	{field:'assignTime',align:'center',width:100,title:'指派时间时间'},
  			        	{field:'devResult',align:'center',width:100, title:'状态',
  			        		formatter: function(value,row,index){
@@ -85,9 +85,9 @@
 	} 
 	 function doSearch () {
 			$("#datagrid").datagrid("load",{
-				"linkMan":$("#linkMan").val(),
+				"customerName":$("#customerNameS").val(),
 				"overview":$("#overview").val(),
-				"createMan":$("#createMan").val(),
+				"createMan":$("#createManS").val(),
 				"status":$("#status").val(),
 				'startTime':$('#startTime').val(),
 				"endTime":$('#endTime').val()
@@ -159,9 +159,9 @@
 		<!-- 表格按钮 -->
 		<div id="toolbar">
 			<div>
-				客户名称：<input type="text" id="linkMan" style="width:100px"/>
+				客户名称：<input type="text" id="customerNameS" style="width:100px"/>
 				摘要：<input type="text" id="overview" style="width:100px"/>
-				创建人：<input type="text" id="createMan" style="width:100px"/>
+				创建人：<input type="text" id="createManS" style="width:100px"/>
 				创建时间段：<input class="easyui-datebox" id="startTime" data-options="sharedCalendar:'#cc'">
 					<input class="easyui-datebox" id="endTime" data-options="sharedCalendar:'#cc'">
 				分配状态： <select  class="easyui-combobox" id="status" >

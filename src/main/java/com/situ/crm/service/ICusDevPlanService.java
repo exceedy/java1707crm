@@ -17,5 +17,7 @@ public interface ICusDevPlanService {
 
 	ServletResponse update(CusDevPlan cusDevPlan);
 
+	ServletResponse deleteById(Integer id);
+
 
 }

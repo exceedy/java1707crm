@@ -47,9 +47,9 @@ public class CustomerLossMeasureServiceImpl implements ICustomerLossMeasureServi
 		
 		int result = customerLossMeasureDao.insert(customerLossMeasure);
 		if (result > 0) {
-			return ServletResponse.creatSuccess("添加成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("添加失败");
+		return ServletResponse.creatError();
 	}
 
 	public ServletResponse delete(String ids) {
@@ -59,18 +59,25 @@ public class CustomerLossMeasureServiceImpl implements ICustomerLossMeasureServi
 			 result += customerLossMeasureDao.deleteByPrimaryKey(Integer.parseInt(id));
 		}
 		if (result > 0) {
-			return ServletResponse.creatSuccess("删除成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("删除失败");
+		return ServletResponse.creatError();
 	}
 
 	public ServletResponse update(CustomerLossMeasure customerLossMeasure) {
 		int result = customerLossMeasureDao.updateByPrimaryKey(customerLossMeasure);
 		if (result > 0) {
-			return ServletResponse.creatSuccess("修改成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("修改失败");
+		return ServletResponse.creatError();
 	}
-
+	
+	public ServletResponse deleteById (Integer id) {
+		int result = customerLossMeasureDao.deleteByPrimaryKey(id);
+		if (result > 0) {
+			return ServletResponse.creatSuccess();
+		}
+		return ServletResponse.creatError();
+	}
 
 }

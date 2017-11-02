@@ -59,12 +59,11 @@ public class CusDevPlanServiceImpl implements ICusDevPlanService {
 	}
 
 	public ServletResponse add(CusDevPlan cusDevPlan) {
-		
 		int result = cusDevPlanDao.insert(cusDevPlan);
 		if (result > 0) {
-			return ServletResponse.creatSuccess("添加成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("添加失败");
+		return ServletResponse.creatError();
 	}
 
 	public ServletResponse delete(String ids) {
@@ -74,17 +73,25 @@ public class CusDevPlanServiceImpl implements ICusDevPlanService {
 			 result += cusDevPlanDao.deleteByPrimaryKey(Integer.parseInt(id));
 		}
 		if (result > 0) {
-			return ServletResponse.creatSuccess("删除成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("删除失败");
+		return ServletResponse.creatError();
 	}
 
 	public ServletResponse update(CusDevPlan cusDevPlan) {
 		int result = cusDevPlanDao.updateByPrimaryKey(cusDevPlan);
 		if (result > 0) {
-			return ServletResponse.creatSuccess("修改成功");
+			return ServletResponse.creatSuccess();
 		}
-		return ServletResponse.creatError("修改失败");
+		return ServletResponse.creatError();
+	}
+
+	public ServletResponse deleteById(Integer id) {
+		int result = cusDevPlanDao.deleteByPrimaryKey(id);
+		if (result > 0) {
+			return ServletResponse.creatSuccess();
+		}
+		return ServletResponse.creatError();
 	}
 
 

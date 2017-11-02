@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.pojo.CustomerLossMeasure;
-import com.situ.crm.service.ICustomerLossMeasureService;
+import com.situ.crm.pojo.CustomerLinkman;
+import com.situ.crm.service.ICustomerLinkmanService;
 
 @Controller
-@RequestMapping(value="customerLossMeasure")
-public class CustomerLossMeasureController {
+@RequestMapping(value="customerLinkman")
+public class CustomerLinkmanController {
 	@InitBinder 
 	public void initBinder(WebDataBinder binder) { 
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -27,25 +27,25 @@ public class CustomerLossMeasureController {
 	           new CustomDateEditor(dateFormat, true));
 	}
 	@Autowired
-	private ICustomerLossMeasureService cusDevPlaService;
+	private ICustomerLinkmanService cusDevPlaService;
 	
 	@RequestMapping(value="index")
 	public String index () {
-		return "customer_loss_measure_manager";
+		return "customer_linkMan_manager";
 	}
 	
 	
 	
 	@RequestMapping(value="findAll")
 	@ResponseBody
-	public EasyUIDataGrid findAll(Integer page, Integer rows,CustomerLossMeasure customerLossMeasure, Date startTime, Date endTime) {
-		return cusDevPlaService.pageList(customerLossMeasure, rows, page, startTime, endTime);
+	public EasyUIDataGrid findAll(Integer page, Integer rows,CustomerLinkman customerLinkman, Date startTime, Date endTime) {
+		return cusDevPlaService.pageList(customerLinkman, rows, page, startTime, endTime);
 	}
 	
 	@RequestMapping(value="add")
 	@ResponseBody
-	public ServletResponse add(CustomerLossMeasure customerLossMeasure) {
-		return cusDevPlaService.add(customerLossMeasure);
+	public ServletResponse add(CustomerLinkman customerLinkman) {
+		return cusDevPlaService.add(customerLinkman);
 	}
 	
 	@RequestMapping(value="delete")
@@ -56,13 +56,13 @@ public class CustomerLossMeasureController {
 	
 	@RequestMapping(value="update")
 	@ResponseBody
-	public ServletResponse update(CustomerLossMeasure customerLossMeasure) {
-		return cusDevPlaService.update(customerLossMeasure);
+	public ServletResponse update(CustomerLinkman customerLinkman) {
+		return cusDevPlaService.update(customerLinkman);
 	}
 	
 	@RequestMapping(value="deleteById")
 	@ResponseBody
-	public ServletResponse deleteById (Integer id) {
+	public ServletResponse deleteById(Integer id) {
 		return cusDevPlaService.deleteById(id);
 	}
 }
