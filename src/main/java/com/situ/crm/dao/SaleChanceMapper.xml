@@ -425,4 +425,8 @@
       dev_result = #{devResult,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="findById" parameterType="int" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" /> from sale_chance where id = #{id}
+  </select>
 </mapper>

@@ -152,14 +152,14 @@
 					data-options="plain:true,iconCls:'icon-yxjhgl'"
 					style="width: 150px">营销机会管理</a> 
 			<a
-					href="javascript:openTab('客户开发计划','${ctx}/cusDevPlan/index.action','icon-khkfjh')"
+					href="javascript:openTab('客户开发计划','${ctx}/saleChance/cusDevPlan.action','icon-khkfjh')"
 					class="easyui-linkbutton"
 					data-options="plain:true,iconCls:'icon-khkfjh'"
 					style="width: 150px">客户开发计划</a>
 			</div>
 			   <div title="客户管理"  data-options="iconCls:'icon-khgl'" style="padding:10px;">
-					<a href="javascript:openTab('客户信息管理','customerManage.jsp','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">客户信息管理</a>
-					<a href="javascript:openTab('客户流失管理','customerLossManage.jsp','icon-khlsgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khlsgl'" style="width: 150px;">客户流失管理</a>
+					<a href="javascript:openTab('客户信息管理','${ctx}/customer/index.action','icon-khxxgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khxxgl'" style="width: 150px;">客户信息管理</a>
+					<a href="javascript:openTab('客户流失管理','${ctx}/customerLoss/index.action','icon-khlsgl')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-khlsgl'" style="width: 150px;">客户流失管理</a>
 				</div>
 				<div title="服务管理" data-options="iconCls:'icon-fwgl'" style="padding:10px">
 					<a href="javascript:openTab('服务创建','customerServiceCreate.jsp','icon-fwcj')" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-fwcj'" style="width: 150px;">服务创建</a>

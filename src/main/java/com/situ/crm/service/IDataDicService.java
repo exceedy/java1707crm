@@ -18,4 +18,6 @@ public interface IDataDicService {
 
 	List<DataDic> findDataDic();
 
+	List<DataDic> findByDataDicName();
+
 }

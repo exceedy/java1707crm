@@ -17,5 +17,9 @@ public interface ISaleChanceService {
 
 	ServletResponse update(SaleChance saleChance);
 
+	ServletResponse findById(Integer id);
+
+	ServletResponse updateDevResult(Integer saleChanceId, Integer devResult);
+
 
 }

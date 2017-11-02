@@ -82,4 +82,8 @@ public class DataDicServiceImpl implements IDataDicService {
 		return dataDicDao.findDataDic();
 	}
 
+	public List<DataDic> findByDataDicName() {
+		return dataDicDao.findByDataDicName();
+	}
+
 }

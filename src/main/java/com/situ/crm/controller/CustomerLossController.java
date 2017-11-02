@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.pojo.SaleChance;
-import com.situ.crm.service.ISaleChanceService;
+import com.situ.crm.pojo.CustomerLoss;
+import com.situ.crm.service.ICustomerLossService;
 
 @Controller
-@RequestMapping(value="saleChance")
-public class SaleChanceController {
+@RequestMapping(value="customerLoss")
+public class CustomerLossController {
 	@InitBinder 
 	public void initBinder(WebDataBinder binder) { 
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -28,52 +28,41 @@ public class SaleChanceController {
 	           new CustomDateEditor(dateFormat, true));
 	}
 	@Autowired
-	private ISaleChanceService saleChanceService;
+	private ICustomerLossService customerLossService;
 	
 	@RequestMapping(value="index")
 	public String index () {
-		return "sale_chance_manager";
+		return "customer_loss_manager";
 	}
 	
-	@RequestMapping(value="cusDevPlan")
-	public String cusDevPlan () {
-		return "cus_dev_plan_manager";
-	}
 	
 	
 	@RequestMapping(value="pageList")
 	@ResponseBody
-	public EasyUIDataGrid pageList(Integer page, Integer rows,SaleChance saleChance, Date startTime, Date endTime) {
-		return saleChanceService.pageList(saleChance, rows, page, startTime, endTime);
+	public EasyUIDataGrid pageList(Integer page, Integer rows,CustomerLoss customerLoss, Date startTime, Date endTime) {
+		return customerLossService.pageList(customerLoss, rows, page, startTime, endTime);
 	}
 	
 	@RequestMapping(value="add")
 	@ResponseBody
-	public ServletResponse add(SaleChance saleChance) {
-		return saleChanceService.add(saleChance);
+	public ServletResponse add(CustomerLoss customerLoss) {
+		return customerLossService.add(customerLoss);
 	}
 	
 	@RequestMapping(value="delete")
 	@ResponseBody
 	public ServletResponse delete(String ids) {
-		return saleChanceService.delete(ids);
+		return customerLossService.delete(ids);
 	}
 	
 	@RequestMapping(value="update")
 	@ResponseBody
-	public ServletResponse update(SaleChance saleChance) {
-		return saleChanceService.update(saleChance);
+	public ServletResponse update(CustomerLoss customerLoss) {
+		return customerLossService.update(customerLoss);
 	}
-	
 	@RequestMapping(value="findById")
 	@ResponseBody
-	public ServletResponse findById (Integer id) {
-		return saleChanceService.findById(id);
+	public ServletResponse findById(Integer id) {
+		return customerLossService.findById(id);
 	}
-	@RequestMapping(value="updateDevResult")
-	@ResponseBody
-	public ServletResponse updateDevResult (Integer saleChanceId, Integer devResult) {
-		return saleChanceService.updateDevResult(saleChanceId, devResult);
-	}
-	
 }

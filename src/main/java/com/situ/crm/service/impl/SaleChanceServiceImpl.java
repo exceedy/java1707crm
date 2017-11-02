@@ -109,5 +109,26 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 		return ServletResponse.creatError("修改失败");
 	}
 
+	public ServletResponse findById(Integer id) {
+		
+		SaleChance saleChance = saleChanceDao.findById(id);
+		if (saleChance != null) {
+			return ServletResponse.creatSuccess(saleChance);
+		}
+		return ServletResponse.creatError();
+	}
+
+	public ServletResponse updateDevResult(Integer saleChanceId, Integer devResult) {
+		SaleChanceExample example = new SaleChanceExample();
+		SaleChance saleChance = new SaleChance();
+		saleChance.setDevResult(devResult);
+		example.createCriteria().andIdEqualTo(saleChanceId);
+		int result = saleChanceDao.updateByExampleSelective(saleChance, example);
+		if (result > 0) {
+			return ServletResponse.creatSuccess("执行成功");
+		}
+		return ServletResponse.creatError("执行失败");
+	}
+
 
 }

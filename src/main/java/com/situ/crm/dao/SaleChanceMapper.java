@@ -94,4 +94,6 @@ public interface SaleChanceMapper {
      */
     int updateByPrimaryKey(SaleChance record);
 
+	SaleChance findById(Integer id);
+
 }

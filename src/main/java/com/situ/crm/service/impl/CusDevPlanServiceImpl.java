@@ -11,10 +11,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.dao.SaleChanceMapper;
-import com.situ.crm.pojo.SaleChance;
-import com.situ.crm.pojo.SaleChanceExample;
-import com.situ.crm.pojo.SaleChanceExample.Criteria;
+import com.situ.crm.dao.CusDevPlanMapper;
+import com.situ.crm.pojo.CusDevPlan;
+import com.situ.crm.pojo.CusDevPlanExample;
+import com.situ.crm.pojo.CusDevPlanExample.Criteria;
 import com.situ.crm.service.ICusDevPlanService;
 import com.situ.crm.uitl.Util;
 
@@ -22,58 +22,45 @@ import com.situ.crm.uitl.Util;
 public class CusDevPlanServiceImpl implements ICusDevPlanService {
 
 	@Autowired
-	private SaleChanceMapper saleChanceDao;
+	private CusDevPlanMapper cusDevPlanDao;
 	
-	public EasyUIDataGrid pageList(SaleChance saleChance, Integer rows, Integer page, Date startTime, Date endTime) {
+	public EasyUIDataGrid pageList(CusDevPlan cusDevPlan, Integer rows, Integer page, Date startTime, Date endTime) {
 		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
 		
-		SaleChanceExample example =  new SaleChanceExample();
+		CusDevPlanExample example =  new CusDevPlanExample();
 		Criteria createCriteria = example.createCriteria();
 		//配置分页
 		PageHelper.startPage(page, rows);
 		//执行查询
-		if (StringUtils.isNotEmpty(saleChance.getLinkMan())) {
+		if (StringUtils.isNotEmpty(cusDevPlan.getExeAffect())) {
 			//查询的条件
-			createCriteria.andLinkManLike(Util.formatLike(saleChance.getLinkMan()));
+			createCriteria.andExeAffectLike(Util.formatLike(cusDevPlan.getExeAffect()));
 		}
-		if (StringUtils.isNotEmpty(saleChance.getOverview())) {
+		if (cusDevPlan.getSaleChanceId() != null ) {
 			//查询的条件
-			createCriteria.andOverviewLike(Util.formatLike(saleChance.getOverview()));
+			createCriteria.andSaleChanceIdEqualTo(cusDevPlan.getSaleChanceId());
 		}
-		if (StringUtils.isNotEmpty(saleChance.getCreateMan())) {
-			//查询的条件
-			createCriteria.andCreateManLike(Util.formatLike(saleChance.getCreateMan()));
-		}
-		if (saleChance.getStatus() != null) {
-			createCriteria.andStatusEqualTo(saleChance.getStatus());
+		if (cusDevPlan.getPlanItem() != null) {
+			createCriteria.andPlanItemLike(cusDevPlan.getPlanItem());
 		}
 		if (startTime != null && endTime != null) {
-			createCriteria.andCreateTimeBetween(startTime, endTime);
+			createCriteria.andPlanDateBetween(startTime, endTime);
 			
 		} 
-		createCriteria.andStatusEqualTo(1);
-		List<SaleChance> saleChanceList = saleChanceDao.selectByExample(example);
+		List<CusDevPlan> cusDevPlanList = cusDevPlanDao.selectByExample(example);
 		
-		PageInfo<SaleChance> pageInfo = new PageInfo<SaleChance>(saleChanceList);
+		PageInfo<CusDevPlan> pageInfo = new PageInfo<CusDevPlan>(cusDevPlanList);
 		int total = (int)pageInfo.getTotal();
 		
 		dataGrid.setTotal(total);
-		dataGrid.setRows(saleChanceList);
+		dataGrid.setRows(cusDevPlanList);
 		
 		return dataGrid;
 	}
 
-	public ServletResponse add(SaleChance saleChance) {
-		String assignMan = saleChance.getAssignMan();
-		if (assignMan != null ) {//判断是否分配了指派人
-			saleChance.setStatus(1);
-			saleChance.setDevResult(1);
-		} else {
-			saleChance.setStatus(0);
-			saleChance.setDevResult(0);
-		}
+	public ServletResponse add(CusDevPlan cusDevPlan) {
 		
-		int result = saleChanceDao.insert(saleChance);
+		int result = cusDevPlanDao.insert(cusDevPlan);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("添加成功");
 		}
@@ -84,7 +71,7 @@ public class CusDevPlanServiceImpl implements ICusDevPlanService {
 		String[] idStr = ids.split(",");
 		int result = 0;
 		for (String id : idStr) {
-			 result += saleChanceDao.deleteByPrimaryKey(Integer.parseInt(id));
+			 result += cusDevPlanDao.deleteByPrimaryKey(Integer.parseInt(id));
 		}
 		if (result > 0) {
 			return ServletResponse.creatSuccess("删除成功");
@@ -92,8 +79,8 @@ public class CusDevPlanServiceImpl implements ICusDevPlanService {
 		return ServletResponse.creatError("删除失败");
 	}
 
-	public ServletResponse update(SaleChance saleChance) {
-		int result = saleChanceDao.updateByPrimaryKey(saleChance);
+	public ServletResponse update(CusDevPlan cusDevPlan) {
+		int result = cusDevPlanDao.updateByPrimaryKey(cusDevPlan);
 		if (result > 0) {
 			return ServletResponse.creatSuccess("修改成功");
 		}

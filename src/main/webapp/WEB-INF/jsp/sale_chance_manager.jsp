@@ -44,8 +44,10 @@
  		})
  		
  	})
+ 	//对话框
  	$(function () {
  		$("#dialog").dialog({
+ 			
  			closed:true,
  			closable:true,
  			buttons:[
@@ -114,8 +116,7 @@
 	 function openAddDialog() {
 		 $("#dialog").dialog("open").dialog("setTitle","添加");
 		 $("#form").form("clear");
-		 $("#createMan").val(${currentUser.name});
-		 $("#createMan").text(${currentUser.name})
+		 $("#createMan").val("${currentUser.name}");
 		 $("#createTime").val(Util.getCurrentDateTime());
 		 url="${ctx}/saleChance/add.action"
 	 }
@@ -179,7 +180,7 @@
 		 <div id="cc" class="easyui-calendar"></div>
 		 
 		<!-- 添加和修改的dialog 开始 -->
-	<div id="dialog" style="width:650;height:280,padding: 10px 20px">
+	<div id="dialog" modal="true" style="width:650;height:280,padding: 10px 20px">
 		<form action="" id="form" method="post">
 			<input type="hidden" id="id" name="id"/>
 			<table cellspacing="8px">
@@ -214,7 +215,7 @@
 		   		</tr>
 		   		<tr>
 		   			<td>创建人：</td>
-		   			<td><input type="text" editable="false" id="createMan" name="createMan" class="easyui-validatebox" />&nbsp;<font color="red">*</font></td>
+		   			<td><input type="text" readonly="true" id="createMan" name="createMan"  />&nbsp;<font color="red">*</font></td>
 		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		   			<td>创建时间：</td>
 		   			<td><input type="text" readonly="true" id="createTime" name="createTime"/>&nbsp;<font color="red">*</font></td>

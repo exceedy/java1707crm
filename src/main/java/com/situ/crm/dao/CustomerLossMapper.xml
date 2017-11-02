@@ -331,4 +331,8 @@
       loss_reason = #{lossReason,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <select id="findById" parameterType="int" resultMap="BaseResultMap">
+  		select <include refid="Base_Column_List" /> from customer_loss where id = #{id}
+  </select>
 </mapper>

@@ -11,7 +11,7 @@
  
  	$(function () {
  		$("#datagrid").datagrid({
- 			url:'${ctx}/saleChance/pageList.action?status=1',
+ 			url:'${ctx}/customerLoss/pageList.action',
  			rownumbers:true,
  			fitColumns:true,
  			pagination:true,
@@ -24,31 +24,22 @@
  			        	{field:'cb',align:'center',checkbox:true},
  			        	{field:'id',align:'center',width:100,title:'编号'},
  			        	{field:'customerName',align:'center',width:100,title:'客户名称'},
- 			        	{field:'overview',align:'center',width:100,title:'摘要'},
- 			        	{field:'linkMan',align:'center',width:100,title:'联系人'},
- 			        	{field:'createMan  ',align:'center',width:100,title:'创建人'},
- 			        	{field:'createTime',align:'center',width:100,title:'创建时间'},
- 			        	{field:'assignMan  ',align:'center',width:100,title:'指派人人'},
- 			        	{field:'assignTime',align:'center',width:100,title:'指派时间时间'},
- 			        	{field:'devResult',align:'center',width:100, title:'状态',
- 			        		formatter: function(value,row,index){
- 			   				if (value == 0){
- 			   					return '未开发';
- 			   				} else if (value == 1) {
- 			   					return '开发中';
- 			   				} else if (value == 2) {
- 			   					return '开发成功';
- 			   				} else if (value == 3) {
- 			   					return '开发失败';
- 			   				}
- 			   			}
- 			        	},
+ 			        	{field:'customerManager',align:'center',width:100,title:'客户经理'},
+ 			        	{field:'lastOrderTime',align:'center',width:100,title:'上次下单日期'},
+ 			        	{field:'confirmLossTime  ',align:'center',width:100,title:'确认流失日期'},
+ 			        	{field:'status',align:'center',width:100,title:'客户状态', formatter:function (value,row,index) {
+ 			        		if (value == 0) {
+ 			        			return '暂缓流失';
+ 			        		} else if (value == 1) {
+ 			        			return '确认流失';
+ 			        		}
+ 			        	}},
  			        	{field:'a',align:'center',width:100, title:'操作',
  			        		formatter: function(value,row,index){
- 			        			if (row.devResult == 0 || row.devResult == 1) {
- 			        				return "<a href='javascript:openCusDevPlanTab("+ row.id +")'>开发</a>"
+ 			        			if (row.status == 0 ) {
+ 			        				return "<a href='javascript:openCusDevPlanTab("+ row.id +")'>暂缓流失</a>"
  			        			} else {
- 			        				return "<a href='javascript:openCusDevPlanInfoTab("+ row.id +")'>查看详情信息</a>"
+ 			        				return "客户确认流失";
  			        			}
  			        		}}
  			        	
@@ -68,7 +59,7 @@
 		$.messager.layer("系统提示","确定要删除吗",function (r) {
 			if (r) {
 				$.post(
-					"${ctx}/saleChance/delete.action",
+					"${ctx}/customerLoss/delete.action",
 					{ids:ids},
 					function (result) {
 						if (result.status == Util.SUCCESS) {
@@ -85,12 +76,9 @@
 	} 
 	 function doSearch () {
 			$("#datagrid").datagrid("load",{
-				"linkMan":$("#linkMan").val(),
-				"overview":$("#overview").val(),
-				"createMan":$("#createMan").val(),
-				"status":$("#status").val(),
-				'startTime':$('#startTime').val(),
-				"endTime":$('#endTime').val()
+				'customerName':$('#customerName').val(),
+				'customerManager':$("#customerManager").val(),
+				'status':$('#status').val()
 			})
 		}
 	 //指定分配人时的时间
@@ -108,7 +96,7 @@
 		 $("#form").form("clear");
 		 $("#createMan").val("${user.name}");
 		 $("#createTime").val(Util.getCurrentDateTime());
-		 url="$(ctx)/saleChance/add.action"
+		 url="$(ctx)/customerLoss/add.action"
 	 }
 	 //修改弹出
 	 function openUpdateDialog() {
@@ -119,7 +107,7 @@
 		 }
 		 $("#dialog").dialog("open").dialog("setTitle","修改");
 		 $("#form").form("load",selected[0]);
-		 url = '${ctx}/saleChance/update.action';
+		 url = '${ctx}/customerLoss/update.action';
 	 }
 	 //修改和添加的提交
 	 function doSave() {
@@ -144,13 +132,9 @@
 	 
 	//可以修改添加开发项
 		function openCusDevPlanTab(id){
-			 window.parent.openTab('客户开发计划项管理','${ctx}/cusDevPlan/index.action?saleChanceId='+id,'icon-khkfjh');
+			 window.parent.openTab('客户流失暂缓措施管理','${ctx}/customerLossMeasure/index.action?customerLossId='+id,'icon-khkfjh');
 		}
 		 
-		//只能查看开发信息
-		function openCusDevPlanInfoTab(id){
-			window.parent.openTab('查看客户开发计划项','${ctx}/cusDevPlan/index.action?saleChanceId='+id+'&show=true','icon-khkfjh');
-		}
 </script> 
 <body>
 	<!-- 数据表格 -->
@@ -159,15 +143,12 @@
 		<!-- 表格按钮 -->
 		<div id="toolbar">
 			<div>
-				客户名称：<input type="text" id="linkMan" style="width:100px"/>
-				摘要：<input type="text" id="overview" style="width:100px"/>
-				创建人：<input type="text" id="createMan" style="width:100px"/>
-				创建时间段：<input class="easyui-datebox" id="startTime" data-options="sharedCalendar:'#cc'">
-					<input class="easyui-datebox" id="endTime" data-options="sharedCalendar:'#cc'">
-				分配状态： <select  class="easyui-combobox" id="status" >
+				客户名称：<input type="text" id="customerName" style="width:100px"/>
+				客户经理：<input type="text" id="customerManager" style="width:100px"/>
+				客户状态： <select  class="easyui-combobox" id="status" >
 							<option value="">请选择</option>
-							<option value="1">已分配</option>
-							<option value="0">未分配</option>
+							<option value="1">确认流失</option>
+							<option value="0">暂缓流失</option>
 						</select>
 						<a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
 			</div>

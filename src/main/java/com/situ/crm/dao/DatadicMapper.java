@@ -95,4 +95,6 @@ public interface DataDicMapper {
     int updateByPrimaryKey(DataDic record);
 
 	List<DataDic> findDataDic();
+
+	List<DataDic> findByDataDicName();
 }

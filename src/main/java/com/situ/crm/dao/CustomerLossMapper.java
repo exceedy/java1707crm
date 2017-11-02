@@ -93,4 +93,6 @@ public interface CustomerLossMapper {
      * @mbggenerated Mon Oct 30 13:58:02 CST 2017
      */
     int updateByPrimaryKey(CustomerLoss record);
+
+	CustomerLoss findById(Integer id);
 }

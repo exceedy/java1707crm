@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.pojo.SaleChance;
-import com.situ.crm.service.ISaleChanceService;
+import com.situ.crm.pojo.Customer;
+import com.situ.crm.service.ICustomerService;
 
 @Controller
-@RequestMapping(value="saleChance")
-public class SaleChanceController {
+@RequestMapping(value="customer")
+public class CustomerController {
 	@InitBinder 
 	public void initBinder(WebDataBinder binder) { 
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -28,52 +28,39 @@ public class SaleChanceController {
 	           new CustomDateEditor(dateFormat, true));
 	}
 	@Autowired
-	private ISaleChanceService saleChanceService;
+	private ICustomerService customerService;
 	
 	@RequestMapping(value="index")
 	public String index () {
-		return "sale_chance_manager";
+		return "customer_manager";
 	}
 	
-	@RequestMapping(value="cusDevPlan")
-	public String cusDevPlan () {
-		return "cus_dev_plan_manager";
-	}
+	
 	
 	
 	@RequestMapping(value="pageList")
 	@ResponseBody
-	public EasyUIDataGrid pageList(Integer page, Integer rows,SaleChance saleChance, Date startTime, Date endTime) {
-		return saleChanceService.pageList(saleChance, rows, page, startTime, endTime);
+	public EasyUIDataGrid pageList(Integer page, Integer rows,Customer customer, Date startTime, Date endTime) {
+		return customerService.pageList(customer, rows, page, startTime, endTime);
 	}
 	
 	@RequestMapping(value="add")
 	@ResponseBody
-	public ServletResponse add(SaleChance saleChance) {
-		return saleChanceService.add(saleChance);
+	public ServletResponse add(Customer customer) {
+		return customerService.add(customer);
 	}
 	
 	@RequestMapping(value="delete")
 	@ResponseBody
 	public ServletResponse delete(String ids) {
-		return saleChanceService.delete(ids);
+		return customerService.delete(ids);
 	}
 	
 	@RequestMapping(value="update")
 	@ResponseBody
-	public ServletResponse update(SaleChance saleChance) {
-		return saleChanceService.update(saleChance);
+	public ServletResponse update(Customer customer) {
+		return customerService.update(customer);
 	}
 	
-	@RequestMapping(value="findById")
-	@ResponseBody
-	public ServletResponse findById (Integer id) {
-		return saleChanceService.findById(id);
-	}
-	@RequestMapping(value="updateDevResult")
-	@ResponseBody
-	public ServletResponse updateDevResult (Integer saleChanceId, Integer devResult) {
-		return saleChanceService.updateDevResult(saleChanceId, devResult);
-	}
 	
 }

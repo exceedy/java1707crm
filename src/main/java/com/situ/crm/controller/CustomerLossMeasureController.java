@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
-import com.situ.crm.pojo.CusDevPlan;
-import com.situ.crm.service.ICusDevPlanService;
+import com.situ.crm.pojo.CustomerLossMeasure;
+import com.situ.crm.service.ICustomerLossMeasureService;
 
 @Controller
-@RequestMapping(value="cusDevPlan")
-public class CusDevPlanController {
+@RequestMapping(value="customerLossMeasure")
+public class CustomerLossMeasureController {
 	@InitBinder 
 	public void initBinder(WebDataBinder binder) { 
 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd"); 
@@ -27,25 +27,25 @@ public class CusDevPlanController {
 	           new CustomDateEditor(dateFormat, true));
 	}
 	@Autowired
-	private ICusDevPlanService cusDevPlaService;
+	private ICustomerLossMeasureService cusDevPlaService;
 	
 	@RequestMapping(value="index")
 	public String index () {
-		return "cus_dev_plan_items_manager";
+		return "customer_loss_measure_manager";
 	}
 	
 	
 	
 	@RequestMapping(value="findAll")
 	@ResponseBody
-	public EasyUIDataGrid findAll(Integer page, Integer rows,CusDevPlan cusDevPlan, Date startTime, Date endTime) {
-		return cusDevPlaService.pageList(cusDevPlan, rows, page, startTime, endTime);
+	public EasyUIDataGrid findAll(Integer page, Integer rows,CustomerLossMeasure customerLossMeasure, Date startTime, Date endTime) {
+		return cusDevPlaService.pageList(customerLossMeasure, rows, page, startTime, endTime);
 	}
 	
 	@RequestMapping(value="add")
 	@ResponseBody
-	public ServletResponse add(CusDevPlan cusDevPlan) {
-		return cusDevPlaService.add(cusDevPlan);
+	public ServletResponse add(CustomerLossMeasure customerLossMeasure) {
+		return cusDevPlaService.add(customerLossMeasure);
 	}
 	
 	@RequestMapping(value="delete")
@@ -56,7 +56,7 @@ public class CusDevPlanController {
 	
 	@RequestMapping(value="update")
 	@ResponseBody
-	public ServletResponse update(CusDevPlan cusDevPlan) {
-		return cusDevPlaService.update(cusDevPlan);
+	public ServletResponse update(CustomerLossMeasure customerLossMeasure) {
+		return cusDevPlaService.update(customerLossMeasure);
 	}
 }
