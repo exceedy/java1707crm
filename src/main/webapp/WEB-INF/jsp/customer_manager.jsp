@@ -194,7 +194,7 @@
 		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 		   			<td style="width:150px">客户等级</td>
 		   			<td>
-		   				<input required="true" class="easyui-combobox" id="level" name="level" data-options="panelHeight:'auto',editable:false,valueField:'trueName',textField:'trueName',url:'${ctx}/dataDic/findByDataDicName.action'"/>
+		   				<input required="true" class="easyui-combobox" id="level" name="level" data-options="panelHeight:'auto',editable:false,valueField:'dataDicValue',textField:'dataDicValue',url:'${ctx}/dataDic/findByDataDicName.action?name=客户等级'"/>
 		   			</td>
 		   		</tr>
 		   		<tr>

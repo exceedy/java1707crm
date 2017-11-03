@@ -96,5 +96,5 @@ public interface DataDicMapper {
 
 	List<DataDic> findDataDic();
 
-	List<DataDic> findByDataDicName();
+	List<DataDic> findByDataDicName(String name);
 }

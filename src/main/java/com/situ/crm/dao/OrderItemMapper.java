@@ -93,4 +93,6 @@ public interface OrderItemMapper {
      * @mbggenerated Mon Oct 30 13:58:02 CST 2017
      */
     int updateByPrimaryKey(OrderItem record);
+
+	OrderItem findByOrderId(Integer orderId);
 }

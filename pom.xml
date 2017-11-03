@@ -8,6 +8,8 @@
 
 	<!-- 集中定义依赖版本号 -->
 	<properties>
+		<!-- 定时 -->
+		<quartz.version>2.2.1</quartz.version>
 		<!-- JSP相关 -->
 		<jstl.version>1.2</jstl.version>
 		<servlet-api.version>2.5</servlet-api.version>
@@ -182,6 +184,18 @@
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
+		<!-- quartz 定时任务-->
+			<dependency>
+			    <groupId>org.quartz-scheduler</groupId>
+			    <artifactId>quartz</artifactId>
+			    <version>${quartz.version}</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.quartz-scheduler</groupId>
+			    <artifactId>quartz-jobs</artifactId>
+			    <version>${quartz.version}</version>
+			</dependency>
+		
 	</dependencies>
 
 	<build>

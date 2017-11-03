@@ -257,7 +257,7 @@
   <select id="findDataDic" resultMap="BaseResultMap">
   	select  DISTINCT data_dic_name from data_dic;
   </select>
-  <select id="findByDataDicName" resultMap="BaseResultMap">
-  	select   data_dic_value from data_dic where data_dic_name = "客户等级";
+  <select id="findByDataDicName" parameterType="String" resultMap="BaseResultMap">
+  	select   data_dic_value from data_dic where data_dic_name = #{name};
   </select>
 </mapper>

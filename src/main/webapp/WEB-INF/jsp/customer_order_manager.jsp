@@ -49,17 +49,28 @@
 			     },
 			     {field:'a',title:'操作',width:80,align:'center',
 			    	formatter:function (value,row,index) {
-			    		return "<a href='javascript:openTab("+ row.id +")'>查看订单明细</a>"
+			    		return "<a href='javascript:orderItems("+ row.id +")'>查看订单明细</a>"
 			    	}	 
 			     }
 			     ]]  
 		});
 	});
-		
-		
-		function openTab(customerOrderId) {
-			window.parent.openTab("订单明细","${ctx}/customerOrderItems/index.anction?customerOrderId="+customerOrderId,'iocn-lsdd')
+		function orderItems(orderId) {
+			$.post({
+				"${ctx}/customerOrder/findByOrderId.action",
+				{orderId:orderId},
+				function (data) {
+					if (data.status == Util.SUCCESS) {
+						$("#dialog").dialog("open");
+						$("#form").form("load",data.data);
+					} else {
+						$.messager.alert(data.msg);
+	}
+				},
+				"json"
+			})
 		}
+		
 		
 		function updateSaleChanceDevResult(devResult){
 			 $.post("${ctx}/saleChance/updateDevResult.action",
@@ -73,6 +84,21 @@
 			 		},
 			 		"json");
 		 }
+		$(function () {
+			$("dialog").dialog({
+				closed:true,
+	 			closable:true,
+	 			buttons:[
+	 			 	{
+	 			 		text:'关闭',
+	 			 		iconCls:'icon-remove',
+	 			 		handler:function () {
+	 			 			$("#dialog").dialog("close");
+	 			 		}
+	 			 	}
+	 			 ]
+			})
+		})
 </script>
 </head>
 <body>
@@ -95,7 +121,36 @@
 	
 	<!-- toolbar 开始 -->
 	<!-- toolbar 结束 -->
-	
+	<div id="dialog" modal="true" style="width:650;height:280,padding: 10px 20px">
+		<form action="" id="form" method="post">
+			<input type="hidden" id="id" name="id"/>
+			<table cellspacing="8px">
+		   		<tr>
+		   			<td>编号：</td>
+		   			<td><input type="text" id="id" name="id" class="easyui-validatebox" required="true"/>&nbsp;<font color="red">*</font></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>商品名称</td>
+		   			<td><input type="text" id="productName" name="productName" /></td>
+		   		</tr>
+		   		<tr>
+		   			<td>商品数量：</td>
+		   			<td><input type="text" id="productNum" name="productNum" /></td>
+		   			<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			<td>单位：</td>
+		   			<td><input type="text" id="unit" name="unit" /></td>
+		   		</tr>
+		   		<tr>
+		   			<td>价格：</td>
+		   			<td><input type="text" id="price" name="price" class="easyui-numberbox" data-options="min:0,max:100" required="true"/>&nbsp;<font color="red">*</font></td>
+		   			<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   		</tr>
+		   		<tr>
+		   			<td>总金额：</td>
+		   			<td colspan="4"><input type="text" id="sum" name="sum" style="width: 420px"/></td>
+		   		</tr>
+		   	</table>
+		</form>
+	</div>
 
 
 </body>

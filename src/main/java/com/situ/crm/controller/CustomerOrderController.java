@@ -65,4 +65,9 @@ public class CustomerOrderController {
 	public ServletResponse deleteById(Integer id) {
 		return cusDevPlaService.deleteById(id);
 	}
+	@RequestMapping(value="findById")
+	@ResponseBody
+	public ServletResponse findByOrderId(Integer orderId) {
+		return cusDevPlaService.findByOrederId(orderId);
+	}
 }

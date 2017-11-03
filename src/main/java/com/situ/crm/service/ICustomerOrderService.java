@@ -19,5 +19,7 @@ public interface ICustomerOrderService {
 
 	ServletResponse deleteById(Integer id);
 
+	ServletResponse findByOrederId(Integer orderId);
+
 
 }

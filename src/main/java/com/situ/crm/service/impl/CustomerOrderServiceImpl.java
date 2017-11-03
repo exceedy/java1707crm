@@ -3,7 +3,6 @@ package com.situ.crm.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,17 +11,20 @@ import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
 import com.situ.crm.dao.CustomerOrderMapper;
+import com.situ.crm.dao.OrderItemMapper;
 import com.situ.crm.pojo.CustomerOrder;
 import com.situ.crm.pojo.CustomerOrderExample;
 import com.situ.crm.pojo.CustomerOrderExample.Criteria;
+import com.situ.crm.pojo.OrderItem;
 import com.situ.crm.service.ICustomerOrderService;
-import com.situ.crm.uitl.Util;
 
 @Service
 public class CustomerOrderServiceImpl implements ICustomerOrderService {
 
 	@Autowired
 	private CustomerOrderMapper customerOrderDao;
+	@Autowired
+	private OrderItemMapper orderItemDao;
 	
 	public EasyUIDataGrid pageList(CustomerOrder customerOrder, Integer rows, Integer page, Date startTime, Date endTime) {
 		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
@@ -78,6 +80,14 @@ public class CustomerOrderServiceImpl implements ICustomerOrderService {
 			return ServletResponse.creatSuccess();
 		}
 		return ServletResponse.creatError();
+	}
+
+	public ServletResponse findByOrederId(Integer orderId) {
+		OrderItem data = orderItemDao.findByOrderId(orderId);
+		if (data != null) {
+			return ServletResponse.creatSuccess(data);
+		}
+		return ServletResponse.creatError("无效订单");
 	}
 
 
