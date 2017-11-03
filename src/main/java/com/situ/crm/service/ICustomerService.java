@@ -19,6 +19,8 @@ public interface ICustomerService {
 
 	ServletResponse findById(Integer id);
 
+	void checkCustomerLoss();
+
 
 
 

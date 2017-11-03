@@ -552,4 +552,11 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  
+  <!-- 查询流失的客户 -->
+  <select id="checkCustomerLoss" resultMap="BaseResultMap">
+  	SELECT <include refid="Base_Column_List" /> FROM customer AS c WHERE id  NOT IN (SELECT customer_id FROM  
+	customer_order WHERE DATE_ADD(order_date, INTERVAL 6 MONTH)>NOW())
+ AND c.STATUS = 1
+  </select>
 </mapper>

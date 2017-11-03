@@ -85,6 +85,15 @@
 		 })
 	 }
 	 )
+	 function doSearch() {
+		 $("#datagrid").datagrid("load"{
+			 'serviceType':$("#serviceType").val(),
+			 'overview':$("#overview").val(),
+			 'customer'$("#customerNameS").val(),
+			 'startTime':$("#startTime").val(),
+			 'endTime':$("#endTime").val()
+		 }) 
+	 }
 </script> 
 <body>
 	<table id="datagrid"></table>
@@ -163,6 +172,17 @@
 		 	<div>
 				 <a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-fwgd" >客户服务详情</a>
 			</div>
+			<div>
+				客户名称：<input type="text" id="customerNameS" style="width:100px"/>
+				摘要：<input type="text" id="overview" style="width:100px"/>
+				创建人：<input type="text" id="createManS"  style="width:100px"/>
+				<td>服务类型：</td>
+		   			<td><input type="text" id="serviceType" name="serviceType" class="easyui-combobox" data-options="panelHeight:'auto',editable:false,valueField:'dataDicValue',textField:'dataDicValue',url:'${ctx}/dataDic/findByDataDicName.action?name=服务类型'" required="true"/>&nbsp;<font color="red">*</font></td>
+				创建日期：<input class="easyui-datebox" id="startTime" data-options="sharedCalendar:'#cc'">
+					<input class="easyui-datebox" id="endTime" data-options="sharedCalendar:'#cc'">
+						<a href="javascript:doSearch()" class="easyui-linkbutton" iconCls="icon-search">搜索</a>
+			</div>
+		 <div id="cc" class="easyui-calendar"></div>
 		 </div>
 </body>
 </html>

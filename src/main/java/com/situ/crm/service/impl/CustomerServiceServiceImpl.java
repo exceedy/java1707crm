@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
 import com.situ.crm.dao.CustomerServiceMapper;
@@ -31,10 +32,21 @@ public class CustomerServiceServiceImpl implements ICustomerServiceService {
 		Criteria createCriteria = example.createCriteria();
 		//配置分页
 		PageHelper.startPage(page, rows);
+		if (StringUtil.isNotEmpty(customerService.getServiceType())) {
+			createCriteria.andServiceTypeLike(customerService.getServiceType());
+		}
+		if (StringUtil.isNotEmpty(customerService.getOverview())) {
+			createCriteria.andOverviewLike(customerService.getOverview());
+		}
+		if (StringUtil.isNotEmpty(customerService.getCustomer())) {
+			createCriteria.andCustomerLike(customerService.getCustomer());
+		}
+		if (StringUtil.isNotEmpty(customerService.getServiceType())) {
+			createCriteria.andCreateTimeBetween(startTime, endTime);
+		}
 		List<CustomerService> customerServiceList = customerServiceDao.selectByExample(example);
 		PageInfo<CustomerService> pageInfo = new PageInfo<CustomerService>(customerServiceList);
 		int total = (int)pageInfo.getTotal();
-		
 		dataGrid.setTotal(total);
 		dataGrid.setRows(customerServiceList);
 		

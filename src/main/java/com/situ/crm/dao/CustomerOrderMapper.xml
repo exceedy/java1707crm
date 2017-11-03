@@ -300,4 +300,9 @@
       status = #{status,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="findLastOrderByCustomerId" parameterType="int" resultMap="BaseResultMap">
+  		select <include refid="Base_Column_List" /> from 
+  		from customer_order
+    where  customer_id =#{id}
+  </select>
 </mapper>

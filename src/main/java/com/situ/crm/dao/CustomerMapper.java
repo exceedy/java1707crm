@@ -93,4 +93,6 @@ public interface CustomerMapper {
      * @mbggenerated Mon Oct 30 13:58:02 CST 2017
      */
     int updateByPrimaryKey(Customer record);
+
+	List<Customer> checkCustomerLoss();
 }

@@ -11,10 +11,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
+import com.situ.crm.dao.CustomerLossMapper;
 import com.situ.crm.dao.CustomerMapper;
+import com.situ.crm.dao.CustomerOrderMapper;
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
 import com.situ.crm.pojo.CustomerExample.Criteria;
+import com.situ.crm.pojo.CustomerLoss;
+import com.situ.crm.pojo.CustomerOrder;
 import com.situ.crm.service.ICustomerService;
 import com.situ.crm.uitl.Util;
 
@@ -23,6 +27,11 @@ public class CustomerServiceImpl implements ICustomerService {
 
 	@Autowired
 	private CustomerMapper customerDao;
+	@Autowired
+	private CustomerOrderMapper customerOrderDao;
+	
+	@Autowired
+	private CustomerLossMapper customerLossDao;
 	
 	public EasyUIDataGrid pageList(Customer customer, Integer rows, Integer page, Date startTime, Date endTime) {
 		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
@@ -86,6 +95,32 @@ public class CustomerServiceImpl implements ICustomerService {
 			return ServletResponse.creatSuccess(data);
 		}
 		return ServletResponse.creatError();
+	}
+
+	public void checkCustomerLoss() {
+		//查找流失的客户
+		List<Customer> customerList = customerDao.checkCustomerLoss();
+		
+		for (Customer customer : customerList) {
+			CustomerLoss customerLoss = new CustomerLoss();
+			customerLoss.setCustomerNo(customer.getNum());//客户编号
+			customerLoss.setCustomerName(customer.getName());//客户名称
+			//查询最后一次订单时间
+			customerLoss.setCustomerManager(customer.getManagerName());//客户经理
+			
+			CustomerOrder customerOrder = customerOrderDao.findLastOrderByCustomerId(customer.getId());
+			
+			if (customerOrder == null) {
+				customerLoss.setLastOrderTime(null);
+			} else {
+				customerLoss.setLastOrderTime(customerOrder.getOrderDate());
+			}
+			//添加到流失表
+			customerLossDao.insert(customerLoss);
+			
+			customer.setStatus(1);
+			customerDao.updateByPrimaryKeySelective(customer);
+		}
 	}
 
 
