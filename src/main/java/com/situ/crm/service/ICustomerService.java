@@ -1,11 +1,11 @@
 package com.situ.crm.service;
 
 import java.util.Date;
-import java.util.List;
 
 import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
 import com.situ.crm.pojo.Customer;
+import com.situ.crm.vo.CustomerContribute;
 
 public interface ICustomerService {
 
@@ -20,6 +20,11 @@ public interface ICustomerService {
 	ServletResponse findById(Integer id);
 
 	void checkCustomerLoss();
+
+	EasyUIDataGrid findCustomerContribute(Integer page, Integer rows, CustomerContribute customerContribute);
+
+	ServletResponse composition();
+
 
 
 

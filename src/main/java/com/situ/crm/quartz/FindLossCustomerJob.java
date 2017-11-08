@@ -10,8 +10,9 @@ public class FindLossCustomerJob {
 	@Autowired
 	private ICustomerService customerService;
 	
-	@Scheduled(cron="0 0 2 * * ?")
+	@Scheduled(cron="0/30 0 0 * * ?")
 	public void work() {
+		System.out.println("sb");
 		customerService.checkCustomerLoss();
 	}
 }

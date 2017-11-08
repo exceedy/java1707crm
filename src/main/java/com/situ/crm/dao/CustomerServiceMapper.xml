@@ -443,4 +443,7 @@
       satisfy = #{satisfy,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="serviceAnalysis" resultType="com.situ.crm.vo.CustomerContribute">
+  	SELECT service_type AS NAME, COUNT(service_type) AS VALUE FROM customer_service GROUP BY service_type;
+  </select>
 </mapper>

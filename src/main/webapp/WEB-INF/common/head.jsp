@@ -11,6 +11,9 @@
 
 <!-- 自定义js -->
 <script type="text/javascript" src="${ctx}/resources/js/common.js"></script>
+<!-- eCharts -->
+<script type="text/javascript" src="${ctx}/resources/thirdlib/echarts.common.min.js"></script>
+<script type="text/javascript" src="${ctx}/resources/thirdlib/echarts.min.js"></script>
 <%-- <script type="text/javascript" src="${ctx}/resources/js/common.js"></script> --%>
 <!--主题样式-->
 <link rel="stylesheet" type="text/css" href="${ctx}/resources/thirdlib/jquery-easyui/themes/default/easyui.css">

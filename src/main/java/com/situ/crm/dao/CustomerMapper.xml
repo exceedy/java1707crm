@@ -559,4 +559,16 @@
 	customer_order WHERE DATE_ADD(order_date, INTERVAL 6 MONTH)>NOW())
  AND c.STATUS = 1
   </select>
+  	<select id="composition" parameterType="com.situ.crm.vo.CustomerContribute" resultType="com.situ.crm.vo.CustomerContribute" >
+  		 SELECT LEVEL AS NAME , COUNT(NAME) AS total FROM customer GROUP BY LEVEL
+  	</select>
+  	<select id="findCustomerContribute" parameterType="com.situ.crm.vo.CustomerContribute" resultType="com.situ.crm.vo.CustomerContribute" >
+  		SELECT c.name ,SUM(oi.sum) AS total FROM customer AS c LEFT JOIN customer_order AS co ON c.id=co.customer_id LEFT JOIN order_item AS oi ON co.id=oi.order_id 
+  		<where>
+  			<if test="name!= null and !&quot;&quot;.equals(name.trim())">
+  				and c.name like '%${name}%'
+  			</if>
+  		</where>
+  		GROUP BY c.name ORDER BY total  DESC
+  	</select>
 </mapper>

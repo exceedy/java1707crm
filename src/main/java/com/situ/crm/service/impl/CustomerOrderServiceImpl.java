@@ -83,7 +83,7 @@ public class CustomerOrderServiceImpl implements ICustomerOrderService {
 	}
 
 	public ServletResponse findByOrederId(Integer orderId) {
-		OrderItem data = orderItemDao.findByOrderId(orderId);
+		List<OrderItem> data = orderItemDao.findByOrderId(orderId);
 		if (data != null) {
 			return ServletResponse.creatSuccess(data);
 		}

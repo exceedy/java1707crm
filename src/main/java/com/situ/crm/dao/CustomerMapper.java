@@ -2,6 +2,8 @@ package com.situ.crm.dao;
 
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.pojo.CustomerExample;
+import com.situ.crm.vo.CustomerContribute;
+
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -95,4 +97,8 @@ public interface CustomerMapper {
     int updateByPrimaryKey(Customer record);
 
 	List<Customer> checkCustomerLoss();
+
+	List<CustomerContribute> findCustomerContribute(CustomerContribute customerContribute);
+
+	List<CustomerContribute> composition();
 }

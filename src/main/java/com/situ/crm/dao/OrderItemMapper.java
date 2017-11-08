@@ -94,5 +94,5 @@ public interface OrderItemMapper {
      */
     int updateByPrimaryKey(OrderItem record);
 
-	OrderItem findByOrderId(Integer orderId);
+	List<OrderItem> findByOrderId(Integer orderId);
 }

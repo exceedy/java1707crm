@@ -52,7 +52,18 @@ public class CustomerServiceController {
 		return "customer_service_manager";
 	}
 	
+	@RequestMapping(value="getService")
+	public String getService () {
+		return "customer_service_analysis";
+	}
 	
+	
+	
+	@RequestMapping(value="service")
+	@ResponseBody
+	public ServletResponse service() {
+		return customerServiceService.serviceAnalysis();
+	}
 	@RequestMapping(value="pageList")
 	@ResponseBody
 	public EasyUIDataGrid pageList(Integer page, Integer rows,CustomerService customerService, Date startTime, Date endTime) {

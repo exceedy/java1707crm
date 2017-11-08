@@ -3,7 +3,6 @@ package com.situ.crm.service.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +17,7 @@ import com.situ.crm.pojo.CustomerServiceExample;
 import com.situ.crm.pojo.CustomerServiceExample.Criteria;
 import com.situ.crm.service.ICustomerServiceService;
 import com.situ.crm.uitl.Util;
+import com.situ.crm.vo.CustomerContribute;
 
 @Service
 public class CustomerServiceServiceImpl implements ICustomerServiceService {
@@ -33,13 +33,13 @@ public class CustomerServiceServiceImpl implements ICustomerServiceService {
 		//配置分页
 		PageHelper.startPage(page, rows);
 		if (StringUtil.isNotEmpty(customerService.getServiceType())) {
-			createCriteria.andServiceTypeLike(customerService.getServiceType());
+			createCriteria.andServiceTypeLike(Util.formatLike(customerService.getServiceType()));
 		}
 		if (StringUtil.isNotEmpty(customerService.getOverview())) {
-			createCriteria.andOverviewLike(customerService.getOverview());
+			createCriteria.andOverviewLike(Util.formatLike(customerService.getOverview()));
 		}
 		if (StringUtil.isNotEmpty(customerService.getCustomer())) {
-			createCriteria.andCustomerLike(customerService.getCustomer());
+			createCriteria.andCustomerLike(Util.formatLike(customerService.getCustomer()));
 		}
 		if (StringUtil.isNotEmpty(customerService.getServiceType())) {
 			createCriteria.andCreateTimeBetween(startTime, endTime);
@@ -88,6 +88,17 @@ public class CustomerServiceServiceImpl implements ICustomerServiceService {
 		if (customerService != null) {
 			return ServletResponse.creatSuccess(customerService);
 		}
+		return ServletResponse.creatError();
+	}
+
+	public ServletResponse serviceAnalysis() {
+		List<CustomerContribute> data = customerServiceDao.serviceAnalysis();
+		for (CustomerContribute customerContribute : data) {
+			System.out.println(customerContribute);
+		}
+		if (data != null) {
+			return ServletResponse.creatSuccess(data);
+		} 
 		return ServletResponse.creatError();
 	}
 

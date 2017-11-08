@@ -21,6 +21,7 @@ import com.situ.crm.pojo.CustomerLoss;
 import com.situ.crm.pojo.CustomerOrder;
 import com.situ.crm.service.ICustomerService;
 import com.situ.crm.uitl.Util;
+import com.situ.crm.vo.CustomerContribute;
 
 @Service
 public class CustomerServiceImpl implements ICustomerService {
@@ -122,6 +123,26 @@ public class CustomerServiceImpl implements ICustomerService {
 			customerDao.updateByPrimaryKeySelective(customer);
 		}
 	}
+
+	public EasyUIDataGrid findCustomerContribute(Integer page, Integer rows, CustomerContribute customerContribute) {
+		EasyUIDataGrid dataGrid = new EasyUIDataGrid();
+		PageHelper.startPage(page, rows);
+		List<CustomerContribute> customerContributeList = customerDao.findCustomerContribute(customerContribute);
+		PageInfo<CustomerContribute>  pageInfo = new PageInfo<CustomerContribute>(customerContributeList);
+		int total  = (int) pageInfo.getTotal();
+		dataGrid.setTotal(total);
+		dataGrid.setRows(customerContributeList);
+		return dataGrid;
+	}
+
+	public ServletResponse composition() {
+		List<CustomerContribute> list = customerDao.composition();
+		if (list != null && list.size() != 0) {
+			return ServletResponse.creatSuccess(list);
+		}
+		return ServletResponse.creatError();
+	}
+
 
 
 

@@ -35,10 +35,10 @@
 			pagination:true,
 			columns:[[    
 			      {field:'id',title:'编号',width:50,align:'center'},    
-			     {field:'address',title:'订单号',width:80,align:'center'},    
-			     {field:'time',title:'订单日期',width:80,align:'center'},    
-			     {field:'overview',title:'送货地址',width:80,align:'center'},
-			     {field:'overview',title:'状态',width:80,align:'center',
+			     {field:'orderNo',title:'订单号',width:50,align:'center'},    
+			     {field:'time',title:'订单日期',width:50,align:'center'},    
+			     {field:'address',title:'送货地址',width:50,align:'center'},
+			     {field:'status',title:'状态',width:50,align:'center',
 			    	formatter:function (value,row,index) {
 			    		if (value == 0) {
 			    			return '未回款';
@@ -47,7 +47,7 @@
 			    		}
 			    	}	 
 			     },
-			     {field:'a',title:'操作',width:80,align:'center',
+			     {field:'a',title:'操作',width:50,align:'center',
 			    	formatter:function (value,row,index) {
 			    		return "<a href='javascript:orderItems("+ row.id +")'>查看订单明细</a>"
 			    	}	 
@@ -55,21 +55,7 @@
 			     ]]  
 		});
 	});
-		function orderItems(orderId) {
-			$.post({
-				"${ctx}/customerOrder/findByOrderId.action",
-				{orderId:orderId},
-				function (data) {
-					if (data.status == Util.SUCCESS) {
-						$("#dialog").dialog("open");
-						$("#form").form("load",data.data);
-					} else {
-						$.messager.alert(data.msg);
-	}
-				},
-				"json"
-			})
-		}
+		
 		
 		
 		function updateSaleChanceDevResult(devResult){
@@ -98,7 +84,23 @@
 	 			 	}
 	 			 ]
 			})
-		})
+		});
+		
+		function orderItems(orderId) {
+			$.ajax({
+				url:"${ctx}/customerOrder/findById.action",
+				data:'orderId='+orderId,
+				dataType:"json",
+				success:function (data) {
+					if (data.status == Util.SUCCESS) {
+						$("#dialog").dialog("open");
+						$("#form").form("load",data.data);
+					} else {
+						$.messager.alert(data.msg);
+					}
+				}
+			});
+		};
 </script>
 </head>
 <body>
@@ -143,6 +145,7 @@
 		   			<td>价格：</td>
 		   			<td><input type="text" id="price" name="price" class="easyui-numberbox" data-options="min:0,max:100" required="true"/>&nbsp;<font color="red">*</font></td>
 		   			<td colspan="3">&nbsp;&nbsp;&nbsp;&nbsp;</td>
+		   			
 		   		</tr>
 		   		<tr>
 		   			<td>总金额：</td>

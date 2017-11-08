@@ -2,7 +2,6 @@ package com.situ.crm.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -16,6 +15,7 @@ import com.situ.crm.common.EasyUIDataGrid;
 import com.situ.crm.common.ServletResponse;
 import com.situ.crm.pojo.Customer;
 import com.situ.crm.service.ICustomerService;
+import com.situ.crm.vo.CustomerContribute;
 
 @Controller
 @RequestMapping(value="customer")
@@ -34,9 +34,26 @@ public class CustomerController {
 	public String index () {
 		return "customer_manager";
 	}
+	@RequestMapping(value="getCustomerContribute")
+	public String getCustomerContribute () {
+		return "customerContribute_manager";
+	}
 	
+	@RequestMapping(value="findCustomerContribute")
+	@ResponseBody
+	public EasyUIDataGrid findCustomerContribute(Integer page, Integer rows, CustomerContribute customerContribute) {
+		return customerService.findCustomerContribute(page,rows,customerContribute);
+	}
 	
-	
+	@RequestMapping(value="composition")
+	@ResponseBody
+	public ServletResponse composition () {
+		 return customerService.composition();
+	}
+	@RequestMapping(value="getComposition")
+	public String getComposition () {
+		return "customer_composition_analysis";
+	}
 	
 	@RequestMapping(value="pageList")
 	@ResponseBody

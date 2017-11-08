@@ -86,10 +86,10 @@
 	 }
 	 )
 	 function doSearch() {
-		 $("#datagrid").datagrid("load"{
+		 $("#datagrid").datagrid("load",{
 			 'serviceType':$("#serviceType").val(),
 			 'overview':$("#overview").val(),
-			 'customer'$("#customerNameS").val(),
+			 'customer':$("#customerNameS").val(),
 			 'startTime':$("#startTime").val(),
 			 'endTime':$("#endTime").val()
 		 }) 

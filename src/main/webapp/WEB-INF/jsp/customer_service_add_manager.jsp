@@ -28,8 +28,6 @@
 				 var result = eval('('+ result +')');
 				 if (result.status == Util.SUCCESS) {
 					 $.messager.alert(result.msg);
-					 $("#dialog").dialog("close");
-					 $("#datagrid").datagrid("reload");
 				 } else {
 					 $.messager.alert(result.msg);
 				 }

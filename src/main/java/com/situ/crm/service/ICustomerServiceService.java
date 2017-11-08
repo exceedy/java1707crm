@@ -19,6 +19,8 @@ public interface ICustomerServiceService {
 
 	ServletResponse findById(Integer id);
 
+	ServletResponse serviceAnalysis();
+
 
 
 }
