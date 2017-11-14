@@ -11,6 +11,7 @@
 
 <!-- 自定义js -->
 <script type="text/javascript" src="${ctx}/resources/js/common.js"></script>
+
 <!-- eCharts -->
 <script type="text/javascript" src="${ctx}/resources/thirdlib/echarts.common.min.js"></script>
 <script type="text/javascript" src="${ctx}/resources/thirdlib/echarts.min.js"></script>

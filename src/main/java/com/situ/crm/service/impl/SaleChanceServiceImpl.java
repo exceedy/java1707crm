@@ -115,7 +115,7 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 		}
 		return ServletResponse.creatError("修改失败");
 	}
-
+	
 	public ServletResponse findById(Integer id) {
 		
 		SaleChance saleChance = saleChanceDao.findById(id);
@@ -168,7 +168,7 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 
 			// 3.2、创建列标题行；并且设置列标题
 			HSSFRow rowHead = sheet.createRow(1);
-			String[] titles = { "编号", "客户名称", "概要", "联系人", "练习电话","创建人","创建时间","状态" };
+			String[] titles = { "编号", "客户名称", "概要", "联系人", "联系电话","创建人","创建时间","状态" };
 			for (int i = 0; i < titles.length; i++) {
 				HSSFCell cell2 = rowHead.createCell(i);
 				// 加载单元格样式
@@ -179,9 +179,9 @@ public class SaleChanceServiceImpl implements ISaleChanceService {
 			// 4、操作单元格；将用户列表写入excel
 			if (list != null) {
 				for (int j = 0; j < list.size(); j++) {
-					HSSFRow row = sheet.createRow(j + 2);
-					HSSFCell cellId = row.createCell(0);
-					cellId.setCellValue(list.get(j).getId());
+					HSSFRow row = sheet.createRow(j + 2);//创建行
+					HSSFCell cellId = row.createCell(0);//创建第一个单元格
+					cellId.setCellValue(list.get(j).getId());//赋值给第一个单元格
 					HSSFCell cellName = row.createCell(1);
 					cellName.setCellValue(list.get(j).getCustomerName());
 					HSSFCell cellOverview = row.createCell(2);

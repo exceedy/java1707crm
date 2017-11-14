@@ -154,6 +154,26 @@
 	 function doExportExcel(){
 			window.location.href="${ctx}/saleChance/exportExcel.action";
 		}
+	 function uploadExcel() {
+		 var fileName= $('#uploadExcel').filebox('getValue');
+		 if (fileName == "") {
+			 $.messager.alert("提示","请选择文件");
+			 return;
+		 } 
+		$("#uploadExcelForm").form("submit",{
+				 url:'${ctx}/saleChance/uploadExcel.action',
+				 success:function (data) {
+					 var data = eval('('+ data +')');
+					 if (data.status == Util.SUCCESS) {
+						 $.messager.alert("提示",data.msg);
+						 $("#datagrid").datagrid("reload");
+						 } else {
+						 $.messager.alert("提示",data.msg);
+						 }
+				 }
+		})
+		 
+	 }
 </script> 
 <body>
 	<!-- 数据表格 -->
@@ -166,6 +186,10 @@
 				<a href="javascript:openUpdateDialog()" class="easyui-linkbutton" iconCls="icon-edit" >修改</a>
 				<a href="javascript:remove()" class="easyui-linkbutton" iconCls="icon-remove" >删除</a>
 				<a class="easyui-linkbutton" href="javascript:doExportExcel()" iconCls="icon-add">导出报表</a>
+				<form  id="uploadExcelForm"  method="post" enctype="multipart/form-data">
+				 选择文件：　<input id="uploadExcel" name="uploadExcel" class="easyui-filebox" style="width:200px" data-options="prompt:'请选择文件...',accept:'.xls'"> 
+				 <a href="#" class="easyui-linkbutton" style="width:122px" onclick="uploadExcel()" >导入信息</a>
+				</form>
 			</div>
 			<div>
 				客户名称：<input type="text" id="customerNameS" style="width:100px"/>
